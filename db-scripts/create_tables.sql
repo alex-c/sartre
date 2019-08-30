@@ -17,3 +17,6 @@ CREATE TABLE user_roles (
     user_login varchar (32) REFERENCES users (login),
     role_id integer REFERENCES roles (id)
 );
+
+INSERT INTO roles (name) VALUES ('admin');
+INSERT INTO roles (name) VALUES ('author');
