@@ -18,6 +18,11 @@ namespace SartreServer.Models
         public string Name { get; set; }
 
         /// <summary>
+        /// The user's hashed password.
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
         /// A short user biography.
         /// </summary>
         public string Biography { get; set; }
