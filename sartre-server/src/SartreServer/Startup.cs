@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SartreServer.Repositories;
+using SartreServer.Repositories.SqlRepositories;
+using SartreServer.Services;
 
 namespace SartreServer
 {
@@ -23,6 +26,12 @@ namespace SartreServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // Set up repositories
+            services.AddSingleton<IUserRepository>(new SqlUserRepository(Configuration));
+
+            // Set up services
+            services.AddSingleton<UserService>();
         }
 
         public void Configure(IApplicationBuilder app)
