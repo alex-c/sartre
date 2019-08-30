@@ -11,10 +11,13 @@ namespace SartreServer
 
         private ILoggerFactory LoggerFactory { get; }
 
+        private ILogger Logger { get; }
+
         public Startup(ILoggerFactory loggerFactory, IConfiguration configuration)
         {
             LoggerFactory = loggerFactory;
             Configuration = configuration;
+            Logger = LoggerFactory.CreateLogger<Startup>();
         }
 
         public void ConfigureServices(IServiceCollection services)
