@@ -9,10 +9,8 @@ using System.Collections.Generic;
 namespace SartreServer.Controllers
 {
     [Route("api/users")]
-    public class UserController : Controller
+    public class UserController : ControllerBase
     {
-        private ILogger Logger { get; }
-
         private UserService UserService { get; }
 
         public UserController(ILoggerFactory loggerFactory, UserService userService)
@@ -29,9 +27,9 @@ namespace SartreServer.Controllers
                 IEnumerable<User> users = UserService.GetAllUsers();
                 return new OkObjectResult(users);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return new StatusCodeResult(500);
+                return HandleUnexpectedException(exception);
             }
         }
 
@@ -47,9 +45,9 @@ namespace SartreServer.Controllers
             {
                 return new NotFoundObjectResult(exception.Message);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return new StatusCodeResult(500);
+                return HandleUnexpectedException(exception);
             }
         }
     }
