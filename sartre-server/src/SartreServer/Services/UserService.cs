@@ -2,7 +2,6 @@
 using SartreServer.Models;
 using SartreServer.Repositories;
 using SartreServer.Services.Exceptions;
-using System;
 using System.Collections.Generic;
 
 namespace SartreServer.Services
