@@ -7,6 +7,11 @@ namespace SartreServer.Models
     /// </summary>
     public class User
     {
+        public User()
+        {
+            Roles = new List<Role>();
+        }
+
         /// <summary>
         /// The user's unique login name.
         /// </summary>
@@ -35,6 +40,6 @@ namespace SartreServer.Models
         /// <summary>
         /// The platform roles the user has been assigned.
         /// </summary>
-        public IEnumerable<Role> Roles { get; set; }
+        public ICollection<Role> Roles { get; set; }
     }
 }

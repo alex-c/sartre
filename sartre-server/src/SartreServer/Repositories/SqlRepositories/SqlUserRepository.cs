@@ -4,6 +4,7 @@ using Npgsql;
 using SartreServer.Models;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace SartreServer.Repositories.SqlRepositories
 {
@@ -56,12 +57,15 @@ namespace SartreServer.Repositories.SqlRepositories
         /// <returns>Returns the user, or null if no matching user was found.</returns>
         public User GetUser(string login)
         {
-            User user = null;
+            IEnumerable<User> users = null;
             using (IDbConnection connection = GetNewConnection())
             {
-                user = connection.QueryFirst<User>("SELECT * FROM users WHERE login=@Login", new { Login = login });
+                users = connection.Query<User, Role, User>("SELECT * FROM users WHERE login=@Login JOIN user_roles ON users.login = user_roles.user_login JOIN roles ON roles.id = user_roles.role_id", (user, role) => {
+                    user.Roles.Add(role);
+                    return user;
+                }, new { Login = login });
             }
-            return user;
+            return users.FirstOrDefault();
         }
 
         /// <summary>
