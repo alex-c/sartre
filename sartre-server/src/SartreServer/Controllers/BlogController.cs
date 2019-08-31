@@ -34,7 +34,7 @@ namespace SartreServer.Controllers
         }
 
         [HttpGet("{blogId}")]
-        public IActionResult GetUser(string blogId)
+        public IActionResult GetBlog(string blogId)
         {
             try
             {
@@ -44,6 +44,34 @@ namespace SartreServer.Controllers
             catch (BlogNotFoundException exception)
             {
                 return new NotFoundObjectResult(exception.Message);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        [HttpGet("{blogId}/posts")]
+        public IActionResult GetBlogPosts(string blogId, [FromQuery] int page)
+        {
+            try
+            {
+                IEnumerable<Post> posts = BlogService.GetBlogPosts(blogId, page, 10); // TODO: wheere does items per page come from?
+                return new OkObjectResult(posts);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        [HttpGet("{blogId}/contributors")]
+        public IActionResult GetBlogContributors(string blogId)
+        {
+            try
+            {
+                IEnumerable<User> users = BlogService.GetBlogContributors(blogId);
+                return new OkObjectResult(users);
             }
             catch (Exception exception)
             {
