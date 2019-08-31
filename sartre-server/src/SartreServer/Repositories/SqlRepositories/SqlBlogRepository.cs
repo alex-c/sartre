@@ -18,7 +18,7 @@ namespace SartreServer.Repositories.SqlRepositories
         private string ConnectionString { get; }
 
         /// <summary>
-        /// Sets up a PostgreSQL-based user repository from the app configuration.
+        /// Sets up a PostgreSQL-based blog repository from the app configuration.
         /// </summary>
         /// <param name="configuration">Application configuration.</param>
         public SqlBlogRepository(IConfiguration configuration)
@@ -89,7 +89,7 @@ namespace SartreServer.Repositories.SqlRepositories
         {
             using (IDbConnection connection = GetNewConnection())
             {
-                connection.Execute("UPDATE blogs SET title=@Title, description=@Description WHERE id=@ID", new
+                connection.Execute("UPDATE blogs SET title=@Title, description=@Description WHERE id=@Id", new
                 {
                     blog.Title,
                     blog.Description,
