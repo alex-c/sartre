@@ -100,14 +100,14 @@ namespace SartreServer.Repositories.SqlRepositories
         }
 
         /// <summary>
-        /// Deletes a user.
+        /// Deletes a user, identified by his login name.
         /// </summary>
-        /// <param name="user">The user to delete.</param>
-        public void DeleteUser(User user)
+        /// <param name="login">The login name of the user to delete.</param>
+        public void DeleteUser(string login)
         {
             using (IDbConnection connection = GetNewConnection())
             {
-                connection.Execute("DELETE FROM users WHERE login = @Login", new { user.Login });
+                connection.Execute("DELETE FROM users WHERE login = @Login", new { Login = login });
             }
         }
     }

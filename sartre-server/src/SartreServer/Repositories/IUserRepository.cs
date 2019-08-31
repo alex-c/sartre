@@ -34,9 +34,9 @@ namespace SartreServer.Repositories
         void UpdateUser(User user);
 
         /// <summary>
-        /// Deletes a user.
+        /// Deletes a user, identified by his login name.
         /// </summary>
-        /// <param name="user">The user to delete.</param>
-        void DeleteUser(User user);
+        /// <param name="login">The login name of the user to delete.</param>
+        void DeleteUser(string login);
     }
 }
