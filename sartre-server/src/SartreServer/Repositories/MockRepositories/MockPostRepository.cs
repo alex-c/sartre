@@ -8,9 +8,16 @@ namespace SartreServer.Repositories.MockRepositories
     {
         private Dictionary<string, Post> Posts { get; }
 
-        public MockPostRepository()
+        public MockPostRepository(MockDataProvider dataProvider = null)
         {
-            Posts = new Dictionary<string, Post>();
+            if (dataProvider == null)
+            {
+                Posts = new Dictionary<string, Post>();
+            }
+            else
+            {
+                Posts = dataProvider.Posts;
+            }
         }
 
         public IEnumerable<Post> GetAllPosts()

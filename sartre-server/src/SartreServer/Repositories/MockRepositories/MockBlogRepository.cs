@@ -7,9 +7,16 @@ namespace SartreServer.Repositories.MockRepositories
     {
         private Dictionary<string, Blog> Blogs { get; }
 
-        public MockBlogRepository()
+        public MockBlogRepository(MockDataProvider dataProvider = null)
         {
-            Blogs = new Dictionary<string, Blog>();
+            if (dataProvider == null)
+            {
+                Blogs = new Dictionary<string, Blog>();
+            }
+            else
+            {
+                Blogs = dataProvider.Blogs;
+            }
         }
 
         public void CreateBlog(Blog blog)

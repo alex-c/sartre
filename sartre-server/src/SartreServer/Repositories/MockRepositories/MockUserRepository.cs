@@ -7,9 +7,16 @@ namespace SartreServer.Repositories.MockRepositories
     {
         private Dictionary<string, User> Users { get; }
 
-        public MockUserRepository()
+        public MockUserRepository(MockDataProvider dataProvider = null)
         {
-            Users = new Dictionary<string, User>();
+            if (dataProvider == null)
+            {
+                Users = new Dictionary<string, User>();
+            }
+            else
+            {
+                Users = dataProvider.Users;
+            }
         }
 
         public void CreateUser(User user)
