@@ -15,6 +15,15 @@ namespace SartreServer.Repositories
         IEnumerable<Post> GetAllPosts();
 
         /// <summary>
+        /// Gets paginated posts for a given blog.
+        /// </summary>
+        /// <param name="blogId">Id of the blog to get posts for.</param>
+        /// <param name="page">Page of the post list.</param>
+        /// <param name="itemsPerPage">Number of items per page for the post list.</param>
+        /// <returns>Returns the paginated posts.</returns>
+        IEnumerable<Post> GetPostsOfBlog(string blogId, int page, int itemsPerPage);
+
+        /// <summary>
         /// Gets a post by its ID.
         /// </summary>
         /// <param name="postId">ID of the post.</param>

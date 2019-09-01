@@ -13,10 +13,13 @@ namespace SartreServer.Services
 
         private IBlogRepository BlogRepository { get; }
 
-        public BlogService(ILoggerFactory loggerFactroy, IBlogRepository blogRepository)
+        private IPostRepository PostRepository { get; }
+
+        public BlogService(ILoggerFactory loggerFactroy, IBlogRepository blogRepository, IPostRepository postRepository)
         {
             Logger = loggerFactroy.CreateLogger<UserService>();
             BlogRepository = blogRepository;
+            PostRepository = postRepository;
         }
 
         public IEnumerable<Blog> GetAllBlogs()
@@ -26,7 +29,7 @@ namespace SartreServer.Services
 
         public IEnumerable<Post> GetBlogPosts(string blogId, int page, int itemsPerPage)
         {
-            throw new NotImplementedException(); // TODO: implement this
+            return PostRepository.GetPostsOfBlog(blogId, page, itemsPerPage);
         }
 
         public IEnumerable<User> GetBlogContributors(string blogId)

@@ -1,5 +1,6 @@
 ﻿using SartreServer.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SartreServer.Repositories.MockRepositories
 {
@@ -12,16 +13,6 @@ namespace SartreServer.Repositories.MockRepositories
             Posts = new Dictionary<string, Post>();
         }
 
-        public void CreatePost(Post post, string login)
-        {
-            Posts.Add(post.Id, post);
-        }
-
-        public void DeletePost(string postId)
-        {
-            Posts.Remove(postId);
-        }
-
         public IEnumerable<Post> GetAllPosts()
         {
             return Posts.Values;
@@ -32,9 +23,24 @@ namespace SartreServer.Repositories.MockRepositories
             return Posts.GetValueOrDefault(postId);
         }
 
+        public IEnumerable<Post> GetPostsOfBlog(string blogId, int page, int itemsPerPage)
+        {
+            return Posts.Values.Where(p => p.Blog.Id == blogId).Skip(itemsPerPage * page - itemsPerPage).Take(itemsPerPage);
+        }
+
+        public void CreatePost(Post post, string login)
+        {
+            Posts.Add(post.Id, post);
+        }
+
         public void UpdatePost(Post post)
         {
             Posts[post.Id] = post;
+        }
+
+        public void DeletePost(string postId)
+        {
+            Posts.Remove(postId);
         }
     }
 }

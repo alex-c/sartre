@@ -50,6 +50,29 @@ namespace SartreServer.Repositories.SqlRepositories
         }
 
         /// <summary>
+        /// Gets paginated posts for a given blog.
+        /// </summary>
+        /// <param name="blogId">Id of the blog to get posts for.</param>
+        /// <param name="page">Page of the post list.</param>
+        /// <param name="itemsPerPage">Number of items per page for the post list.</param>
+        /// <returns>Returns the paginated posts.</returns>
+        public IEnumerable<Post> GetPostsOfBlog(string blogId, int page, int itemsPerPage)
+        {
+            IEnumerable<Post> posts = null;
+            int offset = page * itemsPerPage - itemsPerPage;
+            using (IDbConnection connection = GetNewConnection())
+            {
+                posts = connection.Query<Post>("SELECT * FROM posts WHERE blog_id = @BlogId OFFSET @Offset LIMIT @Limit", new
+                {
+                    BlogId = blogId,
+                    Offset = offset,
+                    Limit = itemsPerPage
+                });
+            }
+            return posts;
+        }
+
+        /// <summary>
         /// Gets a post by its ID.
         /// </summary>
         /// <param name="postId">ID of the post.</param>
