@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,15 +12,20 @@ namespace SartreServer
 {
     public class Startup
     {
+        private readonly string LOCAL_DEVELOPMENT_CORS_POLICY = "localDevelopmentCorsPolicy";
+
+        private IHostingEnvironment Environment { get; }
+
         private IConfiguration Configuration { get; }
 
         private ILoggerFactory LoggerFactory { get; }
 
         private ILogger Logger { get; }
 
-        public Startup(ILoggerFactory loggerFactory, IConfiguration configuration)
+        public Startup(ILoggerFactory loggerFactory, IHostingEnvironment environment, IConfiguration configuration)
         {
             LoggerFactory = loggerFactory;
+            Environment = environment;
             Configuration = configuration;
             Logger = LoggerFactory.CreateLogger<Startup>();
         }
@@ -27,6 +33,15 @@ namespace SartreServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // Configure CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(LOCAL_DEVELOPMENT_CORS_POLICY, builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080");
+                });
+            });
 
             // Set up repositories
             if (Configuration.GetValue<bool>("MockData"))
@@ -50,6 +65,13 @@ namespace SartreServer
 
         public void Configure(IApplicationBuilder app)
         {
+            // Configure CORS
+            if (Environment.IsDevelopment())
+            {
+                app.UseCors(LOCAL_DEVELOPMENT_CORS_POLICY);
+            }
+
+            // MVC
             app.UseMvc();
         }
     }
