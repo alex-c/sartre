@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+  <div class="page">
+    <div class="page-title">Blogs</div>
     <BlogList />
   </div>
 </template>
@@ -14,3 +15,6 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+</style>

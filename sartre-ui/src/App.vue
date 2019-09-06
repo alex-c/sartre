@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container">
     <router-view />
   </div>
 </template>
@@ -10,11 +10,26 @@ body {
 }
 
 #app {
-  width: 960px;
   margin: auto;
   font-family: 'Martel', serif;
+  font-size: 12px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: lightblue;
+}
+
+.page {
+  text-align: left;
+}
+
+.page-title {
+  font-size: 2rem;
+  padding: 1rem;
+}
+
+.box-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 </style>

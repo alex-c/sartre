@@ -1,7 +1,9 @@
 <template>
   <div id="blog-list">
     <h1>Blog List</h1>
-    <BlogPreview v-for="blog in blogs" v-bind:key="blog.id" />
+    <div class="tile is-parent">
+      <BlogPreview v-for="blog in blogs" v-bind:key="blog.id" :blog="blog" />
+    </div>
   </div>
 </template>
 
