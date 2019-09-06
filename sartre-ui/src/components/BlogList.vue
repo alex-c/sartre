@@ -5,17 +5,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script>
 import Api from '../api';
 import BlogPreview from '@/components/BlogPreview.vue';
 
-@Component({
-  components: { BlogPreview },
-})
-export default class BlogList extends Vue {
-  blogs = [];
-
+export default {
+  name: 'blog-list',
+  components: {
+    BlogPreview,
+  },
+  data() {
+    return {
+      blogs: [],
+    };
+  },
   mounted() {
     Api.getBlogList()
       .then(function(response) {
@@ -25,8 +28,8 @@ export default class BlogList extends Vue {
       .catch(function(error) {
         console.error(error);
       });
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">
