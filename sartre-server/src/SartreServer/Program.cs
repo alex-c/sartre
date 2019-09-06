@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Events;
+using System.IO;
 
 namespace SartreServer
 {
@@ -6,7 +11,32 @@ namespace SartreServer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("TODO");
+            // Set up Serilog logging
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            // Build and run web host
+            CreateWebHostBuilder(args).Build().Run();
         }
+
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    // Get/set environment info
+                    IHostingEnvironment environment = hostingContext.HostingEnvironment;
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+
+                    // Add appsettings.json
+                    config.AddJsonFile("appsettings.json", optional: false)
+                          .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
+                })
+                .ConfigureLogging(lb => lb.AddSerilog())
+                .UseSerilog();
     }
 }
