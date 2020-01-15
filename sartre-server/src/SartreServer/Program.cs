@@ -9,6 +9,10 @@ namespace SartreServer
 {
     public class Program
     {
+        /// <summary>
+        /// Main program entry point.
+        /// </summary>
+        /// <param name="args">Command line arguments.</param>
         static void Main(string[] args)
         {
             // Set up Serilog logging
@@ -23,6 +27,11 @@ namespace SartreServer
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// Configures and provides the web host builder.
+        /// </summary>
+        /// <param name="args">Command line arguments to pass through.</param>
+        /// <returns>Returns the configured web host builder.</returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
