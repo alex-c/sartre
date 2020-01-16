@@ -11,7 +11,13 @@ namespace SartreServer.Controllers
 
         protected IActionResult HandleUnexpectedException(Exception exception)
         {
-            Logger?.LogError(exception, $"An unexpected exception was caught.");
+            Logger?.LogError(exception, "An unexpected exception was caught.");
+            return new StatusCodeResult(500);
+        }
+
+        protected IActionResult HandleUnexpectedException(Exception exception, string message)
+        {
+            Logger?.LogError(exception, message);
             return new StatusCodeResult(500);
         }
     }
