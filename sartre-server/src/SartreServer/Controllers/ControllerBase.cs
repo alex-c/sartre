@@ -16,6 +16,16 @@ namespace SartreServer.Controllers
         protected ILogger Logger { get; set; }
 
         /// <summary>
+        /// Get's the URI of a newly created resource, to be included in `201 Created` responses.
+        /// </summary>
+        /// <param name="resourceId">The ID of the newly created resource.</param>
+        /// <returns>Returns the newly created resource's URI.</returns>
+        protected Uri GetNewResourceUri(string resourceId)
+        {
+            return new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}/{resourceId}");
+        }
+
+        /// <summary>
         /// Handle bad requests.
         /// </summary>
         /// <param name="message">Message that should explain why the request is bad!</param>
