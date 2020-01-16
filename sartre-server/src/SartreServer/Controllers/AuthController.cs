@@ -23,7 +23,7 @@ namespace SartreServer.Controllers
         {
             if (loginRequest == null)
             {
-                return BadRequest();
+                return HandleBadRequest("A login name and password should be supplied for login requests.");
             }
 
             try

@@ -25,7 +25,7 @@ namespace SartreServer.Controllers
             try
             {
                 IEnumerable<Blog> blogs = BlogService.GetAllBlogs();
-                return new OkObjectResult(blogs);
+                return Ok(blogs);
             }
             catch (Exception exception)
             {
@@ -39,7 +39,7 @@ namespace SartreServer.Controllers
             try
             {
                 Blog blog = BlogService.GetBlog(blogId);
-                return new OkObjectResult(blog);
+                return Ok(blog);
             }
             catch (BlogNotFoundException exception)
             {
@@ -57,7 +57,7 @@ namespace SartreServer.Controllers
             try
             {
                 IEnumerable<Post> posts = BlogService.GetBlogPosts(blogId, page, 2); // TODO: wheere does items per page come from?
-                return new OkObjectResult(posts);
+                return Ok(posts);
             }
             catch (Exception exception)
             {
@@ -71,7 +71,7 @@ namespace SartreServer.Controllers
             try
             {
                 IEnumerable<User> users = BlogService.GetBlogContributors(blogId);
-                return new OkObjectResult(users);
+                return Ok(users);
             }
             catch (Exception exception)
             {

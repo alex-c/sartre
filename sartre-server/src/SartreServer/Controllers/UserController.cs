@@ -25,7 +25,7 @@ namespace SartreServer.Controllers
             try
             {
                 IEnumerable<User> users = UserService.GetAllUsers();
-                return new OkObjectResult(users);
+                return Ok(users);
             }
             catch (Exception exception)
             {
