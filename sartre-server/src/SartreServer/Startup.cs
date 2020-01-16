@@ -87,6 +87,7 @@ namespace SartreServer
             }
 
             // Set up services
+            services.AddSingleton<AuthService>();
             services.AddSingleton<UserService>();
             services.AddSingleton<BlogService>();
         }
