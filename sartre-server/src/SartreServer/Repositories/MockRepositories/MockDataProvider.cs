@@ -11,6 +11,8 @@ namespace SartreServer.Repositories.MockRepositories
 
         public Dictionary<string, Post> Posts { get; }
 
+        public string DefaultBlogId { get; } = "main";
+
         public MockDataProvider()
         {
             Users = new Dictionary<string, User>();

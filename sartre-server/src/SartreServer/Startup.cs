@@ -76,8 +76,12 @@ namespace SartreServer
             {
                 MockDataProvider dataProvider = new MockDataProvider();
                 services.AddSingleton<IUserRepository>(new MockUserRepository(dataProvider));
-                services.AddSingleton<IBlogRepository>(new MockBlogRepository(dataProvider));
+                services.AddSingleton<IPlatformConfigurationRepository>(new MockPlatformConfigurationRepository(dataProvider));
                 services.AddSingleton<IPostRepository>(new MockPostRepository(dataProvider));
+
+                MockBlogRepository blogRepository = new MockBlogRepository(dataProvider);
+                services.AddSingleton<IBlogRepository>(blogRepository);
+                services.AddSingleton<IReadOnlyBlogRepository>(blogRepository);
             }
             else
             {
@@ -88,6 +92,7 @@ namespace SartreServer
 
             // Set up services
             services.AddSingleton<AuthService>();
+            services.AddSingleton<PlatformConfigutationService>();
             services.AddSingleton<UserService>();
             services.AddSingleton<BlogService>();
         }
