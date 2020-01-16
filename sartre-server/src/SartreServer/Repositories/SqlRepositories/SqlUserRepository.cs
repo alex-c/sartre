@@ -71,17 +71,26 @@ namespace SartreServer.Repositories.SqlRepositories
         /// <summary>
         /// Creates a new user.
         /// </summary>
-        /// <param name="user">The user to create.</param>
-        public void CreateUser(User user)
+        /// <param name="login">The login name of the user to create.</param>
+        /// <param name="name">The display name of the user to create.</param>
+        /// <param name="password">The password of the user to create.</param>
+        /// <returns>Returns the newly created used.</returns>
+        public User CreateUser(string login, string name, string password)
         {
+            IEnumerable<User> users = null;
             using (IDbConnection connection = GetNewConnection())
             {
                 connection.Execute("INSERT INTO users (login, name, password) VALUES (@Login, @Name, @Password)", new {
-                    user.Login,
-                    user.Name,
-                    user.Password
+                    login,
+                    name,
+                    password
                 });
+                users = connection.Query<User, Role, User>("SELECT * FROM users WHERE login=@Login JOIN user_roles ON users.login = user_roles.user_login JOIN roles ON roles.id = user_roles.role_id", (user, role) => {
+                    user.Roles.Add(role);
+                    return user;
+                }, new { Login = login });
             }
+            return users.FirstOrDefault();
         }
 
         /// <summary>

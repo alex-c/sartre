@@ -19,9 +19,16 @@ namespace SartreServer.Repositories.MockRepositories
             }
         }
 
-        public void CreateUser(User user)
+        public User CreateUser(string login, string name, string password)
         {
-            Users.Add(user.Login, user);
+            User user = new User()
+            {
+                Login = login,
+                Name = name,
+                Password = password
+            };
+            Users.Add(login, user);
+            return user;
         }
 
         public void DeleteUser(string login)
