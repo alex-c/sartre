@@ -21,7 +21,7 @@ namespace SartreServer.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            if (loginRequest == null)
+            if (loginRequest == null || loginRequest.Login == null || loginRequest.Password == null)
             {
                 return HandleBadRequest("A login name and password should be supplied for login requests.");
             }
