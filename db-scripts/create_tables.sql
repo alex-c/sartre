@@ -35,12 +35,12 @@ CREATE TABLE posts (
     id varchar (32) PRIMARY KEY,
     title varchar (255) NOT NULL UNIQUE,
     published boolean DEFAULT false,
-    blog_id varchar (32) NOT NULL,
+    blog_id varchar (32) REFERENCES blogs (id) NOT NULL,
     content text NOT NULL
 );
 
 CREATE TABLE blog_contributors (
-    blod_id varchar (32) REFERENCES blogs (id) NOT NULL,
+    blog_id varchar (32) REFERENCES blogs (id) NOT NULL,
     user_login varchar (32) REFERENCES users (login) NOT NULL
 );
 
