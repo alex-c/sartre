@@ -22,7 +22,7 @@ namespace SartreServer.Services
         /// <summary>
         /// Grants access to user information.
         /// </summary>
-        private IUserRepository UserRepository { get; }
+        private IReadOnlyUserRepository UserRepository { get; }
 
         /// <summary>
         /// Signing credentials for JWTs.
@@ -45,7 +45,7 @@ namespace SartreServer.Services
         /// <param name="loggerFactroy">Logger factory to create a local logger from.</param>
         /// <param name="userRepository">User repository for access to user data.</param>
         /// <param name="configuration">App configuration for JWT signing information.</param>
-        public AuthService(ILoggerFactory loggerFactroy, IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(ILoggerFactory loggerFactroy, IReadOnlyUserRepository userRepository, IConfiguration configuration)
         {
             Logger = loggerFactroy.CreateLogger<AuthService>();
             UserRepository = userRepository;

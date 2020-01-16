@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SartreServer.Repositories.MockRepositories
 {
-    public class MockUserRepository : IUserRepository
+    public class MockUserRepository : IUserRepository, IReadOnlyUserRepository
     {
         private Dictionary<string, User> Users { get; }
 
