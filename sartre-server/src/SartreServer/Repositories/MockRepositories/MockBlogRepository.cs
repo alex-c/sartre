@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SartreServer.Repositories.MockRepositories
 {
-    public class MockBlogRepository : IBlogRepository
+    public class MockBlogRepository : IBlogRepository, IReadOnlyBlogRepository
     {
         private Dictionary<string, Blog> Blogs { get; }
 
