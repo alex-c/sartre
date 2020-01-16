@@ -71,6 +71,8 @@ namespace SartreServer.Services
             {
                 throw new UserAlreadyExistsException(login);
             }
+
+            // TODO: add hashing!
             return UserRepository.CreateUser(login, name, password);
         }
     }

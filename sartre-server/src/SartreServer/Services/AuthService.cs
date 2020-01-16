@@ -4,7 +4,9 @@ using Microsoft.IdentityModel.Tokens;
 using SartreServer.Models;
 using SartreServer.Repositories;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace SartreServer.Services
@@ -62,10 +64,11 @@ namespace SartreServer.Services
         /// </summary>
         /// <param name="login">Login name of the user to authenticate.</param>
         /// <param name="password">Password to attempt authentication with.</param>
+        /// <param name="user">Contains the authenticated user if authentication is successful, else contains null.</param>
         /// <returns>Returns whether authentication was successful.</returns>
-        public bool AuthenticateUser(string login, string password)
+        public bool TryAuthenticateUser(string login, string password, out User user)
         {
-            User user = UserRepository.GetUser(login);
+            user = UserRepository.GetUser(login);
 
             // TODO: add hashing
             return user.Password == password;
@@ -74,12 +77,20 @@ namespace SartreServer.Services
         /// <summary>
         /// Generates a JWT for a given user.
         /// </summary>
-        /// <param name="login">Login name of the user to generate a token for.</param>
+        /// <param name="user">The user to generate a token for.</param>
         /// <returns>Returns the generated token.</returns>
-        public string GenerateJsonWebToken(string login)
+        public string GenerateJsonWebToken(User user)
         {
-            // TODO: add claims!
-            JwtSecurityToken token = new JwtSecurityToken(JwtIssuer, null, null, expires: DateTime.Now.Add(JwtLifetime), signingCredentials: SigningCredentials);
+            List<Claim> claims = new List<Claim>();
+
+            // Add role claims
+            foreach (Role role in user.Roles)
+            {
+                claims.Add(new Claim("role", role.ToString()));
+            }
+
+            // Generate token
+            JwtSecurityToken token = new JwtSecurityToken(JwtIssuer, null, claims, expires: DateTime.Now.Add(JwtLifetime), signingCredentials: SigningCredentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
