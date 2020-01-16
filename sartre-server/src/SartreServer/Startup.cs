@@ -72,9 +72,13 @@ namespace SartreServer
             });
 
             // Set up repositories
-            if (Configuration.GetValue<bool>("MockData"))
+            if (Configuration.GetValue<bool>("Mocking:UseMockDataPersistence"))
             {
-                MockDataProvider dataProvider = new MockDataProvider();
+                MockDataProvider dataProvider = null;
+                if (Configuration.GetValue<bool>("Mocking:SeedWithMockDataOnStartup"))
+                {
+                    dataProvider = new MockDataProvider();
+                }
                 services.AddSingleton<IUserRepository>(new MockUserRepository(dataProvider));
                 services.AddSingleton<IPlatformConfigurationRepository>(new MockPlatformConfigurationRepository(dataProvider));
                 services.AddSingleton<IPostRepository>(new MockPostRepository(dataProvider));
