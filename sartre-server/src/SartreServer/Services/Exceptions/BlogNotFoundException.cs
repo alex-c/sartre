@@ -6,6 +6,6 @@ namespace SartreServer.Services.Exceptions
     {
         public BlogNotFoundException() : base("Blog could not be found.") { }
 
-        public BlogNotFoundException(string blog) : base($"Blog `{blog}` could not be found.") { }
+        public BlogNotFoundException(string blogId) : base($"Blog `{blogId}` could not be found.") { }
     }
 }
