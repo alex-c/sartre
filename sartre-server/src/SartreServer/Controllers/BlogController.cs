@@ -43,7 +43,7 @@ namespace SartreServer.Controllers
             }
             catch (BlogNotFoundException exception)
             {
-                return new NotFoundObjectResult(exception.Message);
+                return HandleNotFoundException(exception);
             }
             catch (Exception exception)
             {

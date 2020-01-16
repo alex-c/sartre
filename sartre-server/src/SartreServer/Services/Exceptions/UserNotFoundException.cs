@@ -2,7 +2,7 @@
 
 namespace SartreServer.Services.Exceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : Exception, INotFoundException
     {
         public UserNotFoundException() : base("User could not be found.") { }
 

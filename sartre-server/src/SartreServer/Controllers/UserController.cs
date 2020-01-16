@@ -39,11 +39,11 @@ namespace SartreServer.Controllers
             try
             {
                 User user = UserService.GetUser(login);
-                return new OkObjectResult(user);
+                return Ok(user);
             }
             catch (UserNotFoundException exception)
             {
-                return new NotFoundObjectResult(exception.Message);
+                return HandleNotFoundException(exception);
             }
             catch (Exception exception)
             {

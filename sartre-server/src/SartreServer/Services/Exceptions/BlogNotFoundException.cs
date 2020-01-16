@@ -2,7 +2,7 @@
 
 namespace SartreServer.Services.Exceptions
 {
-    public class BlogNotFoundException : Exception
+    public class BlogNotFoundException : Exception, INotFoundException
     {
         public BlogNotFoundException() : base("Blog could not be found.") { }
 
