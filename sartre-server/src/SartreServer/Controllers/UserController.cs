@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SartreServer.Contracts.Requests;
+using SartreServer.Contracts.Responses;
 using SartreServer.Models;
 using SartreServer.Services;
 using SartreServer.Services.Exceptions;
@@ -43,7 +45,7 @@ namespace SartreServer.Controllers
             }
             catch (UserNotFoundException exception)
             {
-                return HandleNotFoundException(exception);
+                return HandleResourceNotFoundException(exception);
             }
             catch (Exception exception)
             {

@@ -1,4 +1,4 @@
-﻿namespace SartreServer.Contracts
+﻿namespace SartreServer.Contracts.Requests
 {
     /// <summary>
     /// A user login request.

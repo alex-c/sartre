@@ -1,4 +1,4 @@
-﻿namespace SartreServer.Contracts
+﻿namespace SartreServer.Contracts.Requests
 {
     /// <summary>
     /// A request to set the Sartre platform's default blog.

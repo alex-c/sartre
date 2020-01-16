@@ -16,7 +16,7 @@ namespace SartreServer.Controllers
         protected ILogger Logger { get; set; }
 
         /// <summary>
-        /// Handle 400 errors!
+        /// Handle bad requests.
         /// </summary>
         /// <param name="message">Message that should explain why the request is bad!</param>
         /// <returns>Returns a 400 error.</returns>
@@ -26,18 +26,27 @@ namespace SartreServer.Controllers
         }
 
         /// <summary>
-        /// Handle 404 errors!
+        /// Handle "resource not found"-type of exceptions
         /// </summary>
-        /// <param name="exception">Not-found exception.</param>
+        /// <param name="exception">The actual exception.</param>
         /// <returns>Returns a 404 error.</returns>
-        protected IActionResult HandleNotFoundException(INotFoundException exception)
+        protected IActionResult HandleResourceNotFoundException(IResourceNotFoundException exception)
         {
             return NotFound(exception.Message);
         }
 
+        /// <summary>
+        /// Handle "resource already exists"-type of exceptions.
+        /// </summary>
+        /// <param name="exception">The actual exception.</param>
+        /// <returns>Returns a 409 error.</returns>
+        protected IActionResult HandleResourceAlreadyExistsException(IResourceAlreadyExsistsException exception)
+        {
+            return Conflict(exception.Message);
+        }
 
         /// <summary>
-        /// Handle 500 errors for totally unexpected exceptions!
+        /// Handle unexpected exceptions.
         /// </summary>
         /// <param name="exception">Unexpected exception that was caught.</param>
         /// <returns>Returns a 500 error.</returns>
@@ -48,7 +57,7 @@ namespace SartreServer.Controllers
         }
 
         /// <summary>
-        /// Handle 500 errors for an expected exception with extra message!
+        /// Handle unexpected exceptions with extra message.
         /// </summary>
         /// <param name="exception">Unexpected exception that was caught.</param>
         /// <param name="message">Extra message explaining the problem.</param>

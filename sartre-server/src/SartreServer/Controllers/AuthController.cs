@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SartreServer.Contracts;
+using SartreServer.Contracts.Requests;
 using SartreServer.Services;
 using SartreServer.Services.Exceptions;
 using System;
