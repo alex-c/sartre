@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SartreServer.Contracts.Requests;
 using SartreServer.Contracts.Responses;
@@ -54,7 +55,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public IActionResult CreateUser([FromBody] UserCreationRequest userCreationRequest)
         {
             if (userCreationRequest == null ||

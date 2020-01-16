@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using SartreServer.Repositories;
 using SartreServer.Repositories.MockRepositories;
 using SartreServer.Repositories.SqlRepositories;
 using SartreServer.Services;
+using System.Text;
 
 namespace SartreServer
 {
@@ -60,8 +63,6 @@ namespace SartreServer
         /// <param name="services">Service collection to register services with.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
             // Configure CORS
             services.AddCors(options =>
             {
@@ -70,6 +71,24 @@ namespace SartreServer
                     builder.WithOrigins("http://localhost:8080");
                 });
             });
+
+            // Configure JWT-based auth
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateAudience = false,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetValue<string>("Jwt:Issuer"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Jwt:Secret")))
+                    };
+                });
+
+            // Configure MVC
+            services.AddMvc();
 
             // Set up repositories
             if (Configuration.GetValue<bool>("Mocking:UseMockDataPersistence"))
@@ -112,13 +131,16 @@ namespace SartreServer
         /// <param name="app">Application builder to configure the app through.</param>
         public void Configure(IApplicationBuilder app)
         {
-            // Configure CORS
+            // Use CORS
             if (Environment.IsDevelopment())
             {
                 app.UseCors(LOCAL_DEVELOPMENT_CORS_POLICY);
             }
 
-            // MVC
+            // Use JWT-based auth
+            app.UseAuthentication();
+
+            // Use MVC
             app.UseMvc();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SartreServer.Contracts.Requests;
 using SartreServer.Models;
@@ -37,7 +38,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("default")]
+        [HttpPost("default"), Authorize]
         public IActionResult SetDefaultBlog([FromBody] SetDefaultBlogRequest setDefaultBlogRequest)
         {
             try
