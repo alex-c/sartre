@@ -20,5 +20,10 @@ namespace SartreServer.Controllers
             Logger?.LogError(exception, message);
             return new StatusCodeResult(500);
         }
+
+        protected IActionResult HandleBadRequest(string message)
+        {
+            return BadRequest(message);
+        }
     }
 }
