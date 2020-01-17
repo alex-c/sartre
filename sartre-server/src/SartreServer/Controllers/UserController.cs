@@ -86,5 +86,65 @@ namespace SartreServer.Controllers
                 return HandleResourceAlreadyExistsException(exception);
             }
         }
+
+        [HttpPatch, Authorize]
+        public IActionResult UpdateUserProfile([FromBody] UserUpdateRequest userUpdateRequest)
+        {
+            if (userUpdateRequest == null || string.IsNullOrWhiteSpace(userUpdateRequest.Login))
+            {
+                return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
+            }
+
+            try
+            {
+                UserService.UpdateUser(userUpdateRequest.Login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
+                return Ok();
+            }
+            catch (UserNotFoundException exception)
+            {
+                return HandleResourceNotFoundException(exception);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        [HttpPatch, Authorize]
+        public IActionResult ChangeUserPassword([FromBody] ChangeUserPasswordRequest changeUserPasswordRequest)
+        {
+            if (changeUserPasswordRequest == null ||
+                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Login) ||
+                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Password) ||
+                string.IsNullOrWhiteSpace(changeUserPasswordRequest.PasswordRepetition))
+            {
+                return HandleBadRequest("A valid login name and repeat passwords need to be supplied for a password change.");
+            }
+
+            if (changeUserPasswordRequest.Password != changeUserPasswordRequest.PasswordRepetition)
+            {
+                return HandleBadRequest("Submitted passwords don't match!.");
+            }
+
+            try
+            {
+                UserService.ChangeUserPassword(changeUserPasswordRequest.Login, changeUserPasswordRequest.Password);
+                return Ok();
+            }
+            catch (UserNotFoundException exception)
+            {
+                return HandleResourceNotFoundException(exception);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        [HttpPatch, Authorize]
+        public IActionResult UpdateUserRoles()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
