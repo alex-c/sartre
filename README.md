@@ -4,7 +4,7 @@ A minimal, authentic blogging platform. Composed of a .NET Core backend, a Postg
 
 ## Development Status
 
-Sartre is in early development! The MVP will contain the following features:
+Sartre is in early development! The minimum viable product (MVP) will contain the following features:
 
 - multi-blog platform: use Sartre to run a single or several blogs
 - multi-user: several users can be contributors to a single blog
@@ -13,7 +13,14 @@ Sartre is in early development! The MVP will contain the following features:
 - saving of drafts and publishing of posts
 - only text posts: no images, syntax highlighting or rich text features
 
-## Roadmap
+Features planned for later include:
+
+- real-time collaboration on draft writing for blog contributors and guest authors
+- rich text content in posts
+- syntax highlighting for code snippets in posts
+- profile pictures
+
+## MVP Roadmap
 
 - [x] Define MVP
 - [ ] Implement a mocked backend
