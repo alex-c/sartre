@@ -1,6 +1,5 @@
 ﻿using SartreServer.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SartreServer.Contracts.Responses
 {
@@ -19,7 +18,11 @@ namespace SartreServer.Contracts.Responses
             Name = user.Name;
             Biography = user.Biography;
             Website = user.Website;
-            Roles = user.Roles.Select(r => r.ToString());
+            Roles = new Dictionary<int, string>();
+            foreach (Role role in user.Roles)
+            {
+                Roles.Add((int)role, role.ToString());
+            }
         }
 
         /// <summary>
@@ -45,6 +48,6 @@ namespace SartreServer.Contracts.Responses
         /// <summary>
         /// The platform roles the user has been assigned.
         /// </summary>
-        public IEnumerable<string> Roles { get; set; }
+        public IDictionary<int, string> Roles { get; set; }
     }
 }
