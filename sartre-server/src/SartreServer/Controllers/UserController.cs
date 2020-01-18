@@ -87,7 +87,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPatch, Authorize]
+        [HttpPost("profile"), Authorize]
         public IActionResult UpdateUserProfile([FromBody] UserUpdateRequest userUpdateRequest)
         {
             if (userUpdateRequest == null || string.IsNullOrWhiteSpace(userUpdateRequest.Login))
@@ -110,7 +110,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPatch, Authorize]
+        [HttpPost("password"), Authorize]
         public IActionResult ChangeUserPassword([FromBody] ChangeUserPasswordRequest changeUserPasswordRequest)
         {
             if (changeUserPasswordRequest == null ||
@@ -141,10 +141,31 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPatch, Authorize]
-        public IActionResult UpdateUserRoles()
+        [HttpPost("roles"), Authorize]
+        public IActionResult UpdateUserRoles([FromBody] UpdateUserRoleRequest updateUserRoleRequest)
         {
-            throw new NotImplementedException();
+            if (updateUserRoleRequest == null ||
+                string.IsNullOrWhiteSpace(updateUserRoleRequest.Login) ||
+                updateUserRoleRequest.RoleIds == null)
+            {
+                return HandleBadRequest("A valid login name and a (potentially empty) list of user roles need to be supplied.");
+            }
+
+            List<Role> roles = new List<Role>();
+            try
+            {
+                foreach (int roleId in updateUserRoleRequest.RoleIds)
+                {
+                    roles.Add((Role)roleId);
+                }
+            }
+            catch
+            {
+                return HandleBadRequest("One or more of the supplied IDs is not a valid Sartre role ID.");
+            }
+
+            UserService.UpdateUserRoles(updateUserRoleRequest.Login, roles);
+            return Ok();
         }
     }
 }

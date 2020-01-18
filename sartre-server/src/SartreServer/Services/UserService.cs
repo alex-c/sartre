@@ -115,5 +115,16 @@ namespace SartreServer.Services
             user.Password = password;
             UserRepository.UpdateUser(user);
         }
+
+        public void UpdateUserRoles(string login, ICollection<Role> roles)
+        {
+            User user = UserRepository.GetUser(login);
+            if (user == null)
+            {
+                throw new UserNotFoundException(login);
+            }
+            user.Roles = roles;
+            UserRepository.UpdateUser(user);
+        }
     }
 }
