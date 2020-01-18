@@ -116,6 +116,11 @@ namespace SartreServer.Services
             UserRepository.UpdateUser(user);
         }
 
+        /// <summary>
+        /// Updates a user's roles.
+        /// </summary>
+        /// <param name="login">The user's unique login name.</param>
+        /// <param name="roles">The user's new set of roles.</param>
         public void UpdateUserRoles(string login, ICollection<Role> roles)
         {
             User user = UserRepository.GetUser(login);
