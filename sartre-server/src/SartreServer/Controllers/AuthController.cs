@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SartreServer.Contracts.Requests;
 using SartreServer.Models;
@@ -41,6 +42,38 @@ namespace SartreServer.Controllers
             catch (UserNotFoundException)
             {
                 return Unauthorized();
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        [HttpPost("password"), Authorize]
+        public IActionResult ChangePassword([FromBody] PasswordChangeRequest passwordChangeRequest)
+        {
+            if (passwordChangeRequest == null ||
+                string.IsNullOrWhiteSpace(passwordChangeRequest.PreviousPassword) ||
+                string.IsNullOrWhiteSpace(passwordChangeRequest.NewPassword) ||
+                string.IsNullOrWhiteSpace(passwordChangeRequest.NewPasswordRepetition))
+            {
+                return HandleBadRequest("The previous user password needs to be supplied additionaly to a duplicate new password.");
+            }
+
+            if (passwordChangeRequest.NewPassword != passwordChangeRequest.NewPasswordRepetition)
+            {
+                return HandleBadRequest("Submitted passwords don't match!.");
+            }
+
+            try
+            {
+                string login = GetSubjectName();
+                AuthService.ChangePassword(login, passwordChangeRequest.PreviousPassword, passwordChangeRequest.NewPassword);
+                return Ok();
+            }
+            catch (UserNotFoundException exception)
+            {
+                return HandleResourceNotFoundException(exception);
             }
             catch (Exception exception)
             {

@@ -119,6 +119,7 @@ namespace SartreServer
             }
 
             // Set up services
+            services.AddSingleton<PasswordHashingService>();
             services.AddSingleton<AuthService>();
             services.AddSingleton<PlatformConfigutationService>();
             services.AddSingleton<UserService>();

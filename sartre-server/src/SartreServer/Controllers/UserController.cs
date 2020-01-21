@@ -110,37 +110,6 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("password"), Authorize]
-        public IActionResult ChangeUserPassword([FromBody] ChangeUserPasswordRequest changeUserPasswordRequest)
-        {
-            if (changeUserPasswordRequest == null ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Login) ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Password) ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.PasswordRepetition))
-            {
-                return HandleBadRequest("A valid login name and repeat passwords need to be supplied for a password change.");
-            }
-
-            if (changeUserPasswordRequest.Password != changeUserPasswordRequest.PasswordRepetition)
-            {
-                return HandleBadRequest("Submitted passwords don't match!.");
-            }
-
-            try
-            {
-                UserService.ChangeUserPassword(changeUserPasswordRequest.Login, changeUserPasswordRequest.Password);
-                return Ok();
-            }
-            catch (UserNotFoundException exception)
-            {
-                return HandleResourceNotFoundException(exception);
-            }
-            catch (Exception exception)
-            {
-                return HandleUnexpectedException(exception);
-            }
-        }
-
         [HttpPost("roles"), Authorize]
         public IActionResult UpdateUserRoles([FromBody] UpdateUserRoleRequest updateUserRoleRequest)
         {

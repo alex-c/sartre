@@ -98,25 +98,6 @@ namespace SartreServer.Services
         }
 
         /// <summary>
-        /// Changes a user's password.
-        /// </summary>
-        /// <param name="login">The user's unique login name.</param>
-        /// <param name="password">The new password to set.</param>
-        /// <exception cref="UserNotFoundException">Thrown if there is no such user.</exception>
-        public void ChangeUserPassword(string login, string password)
-        {
-            User user = UserRepository.GetUser(login);
-            if (user == null)
-            {
-                throw new UserNotFoundException(login);
-            }
-
-            // TODO: add hashing!
-            user.Password = password;
-            UserRepository.UpdateUser(user);
-        }
-
-        /// <summary>
         /// Updates a user's roles.
         /// </summary>
         /// <param name="login">The user's unique login name.</param>
