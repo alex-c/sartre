@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using SartreServer.Services.Exceptions;
 using System;
+using System.Linq;
+using System.Security.Claims;
 
 namespace SartreServer.Controllers
 {
@@ -23,6 +25,21 @@ namespace SartreServer.Controllers
         protected Uri GetNewResourceUri(string resourceId)
         {
             return new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}/{resourceId}");
+        }
+
+        /// <summary>
+        /// Get's the request subject's name as pasrsed from the JWT, which is the user login name.
+        /// </summary>
+        /// <returns>Returns the user's login name</returns>
+        /// <exception cref="Exception">Thrown if no valid subject name was found.</exception>
+        protected string GetSubjectName()
+        {
+            Claim subject = User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault();
+            if (subject == null)
+            {
+                throw new Exception("No subject name available.");
+            }
+            return subject.Value;
         }
 
         /// <summary>
