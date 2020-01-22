@@ -51,6 +51,7 @@ namespace SartreServer.Services
         /// Sets up the authentication service.
         /// </summary>
         /// <param name="loggerFactroy">Logger factory to create a local logger from.</param>
+        /// <param name="passwordHashingService">Provides hashing functionality.</param>
         /// <param name="userRepository">User repository for access to user data.</param>
         /// <param name="configuration">App configuration for JWT signing information.</param>
         public AuthService(ILoggerFactory loggerFactroy, PasswordHashingService passwordHashingService, IUserRepository userRepository, IConfiguration configuration)

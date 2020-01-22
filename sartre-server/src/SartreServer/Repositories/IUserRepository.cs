@@ -28,7 +28,7 @@ namespace SartreServer.Repositories
         /// <param name="name">The display name of the user to create.</param>
         /// <param name="password">The password of the user to create.</param>
         /// <returns>Returns the newly created used.</returns>
-        User CreateUser(string login, string name, string password);
+        User CreateUser(string login, string name, string password, byte[] salt);
 
         /// <summary>
         /// Updates a user.
