@@ -27,6 +27,28 @@ namespace SartreServer.Controllers
             return new Uri($"{Request.Scheme}://{Request.Host}{Request.Path}/{resourceId}");
         }
 
+        #region Parsed JWT information
+
+        /// <summary>
+        /// Checks whether the request subject is an administrator.
+        /// </summary>
+        /// <returns>Returns whether the user is an administrator.</returns>
+        protected bool UserIsAdministrator()
+        {
+            return User.IsInRole("Administrator");
+        }
+
+        /// <summary>
+        /// Checks whether the request subject is a specific user.
+        /// </summary>
+        /// <param name="login">Login name of the user to verify.</param>
+        /// <returns>Returns whether the user was successfully verified.</returns>
+        /// <exception cref="Exception">Thrown if no valid subject name was found.</exception>
+        protected bool UserIs(string login)
+        {
+            return login == GetSubjectName();
+        }
+
         /// <summary>
         /// Get's the request subject's name as pasrsed from the JWT, which is the user login name.
         /// </summary>
@@ -41,6 +63,10 @@ namespace SartreServer.Controllers
             }
             return subject.Value;
         }
+
+        #endregion
+
+        #region Error Handling
 
         /// <summary>
         /// Handle bad requests.
@@ -94,5 +120,7 @@ namespace SartreServer.Controllers
             Logger?.LogError(exception, message);
             return new StatusCodeResult(500);
         }
+
+        #endregion
     }
 }

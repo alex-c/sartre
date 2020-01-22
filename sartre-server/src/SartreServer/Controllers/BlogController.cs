@@ -19,6 +19,8 @@ namespace SartreServer.Controllers
             BlogService = blogService;
         }
 
+        #region Public getters
+
         [HttpGet]
         public IActionResult GetAllBlogs()
         {
@@ -78,5 +80,7 @@ namespace SartreServer.Controllers
                 return HandleUnexpectedException(exception);
             }
         }
+
+        #endregion
     }
 }

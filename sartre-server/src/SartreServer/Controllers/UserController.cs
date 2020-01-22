@@ -23,6 +23,8 @@ namespace SartreServer.Controllers
             UserService = userService;
         }
 
+        #region Public getters
+
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -55,7 +57,11 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost, Authorize]
+        #endregion
+
+        #region Administrative features
+
+        [HttpPost, Authorize(Roles = "Administrator")]
         public IActionResult CreateUser([FromBody] UserCreationRequest userCreationRequest)
         {
             if (userCreationRequest == null ||
@@ -87,35 +93,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPatch("{login}"), Authorize]
-        public IActionResult UpdateUserProfile(string login, [FromBody] UserUpdateRequest userUpdateRequest)
-        {
-            if (string.IsNullOrWhiteSpace(login))
-            {
-                return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
-            }
-
-            if (userUpdateRequest == null)
-            {
-                return HandleBadRequest("Nothing has been supplied to update.");
-            }
-
-            try
-            {
-                UserService.UpdateUser(login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
-                return Ok();
-            }
-            catch (UserNotFoundException exception)
-            {
-                return HandleResourceNotFoundException(exception);
-            }
-            catch (Exception exception)
-            {
-                return HandleUnexpectedException(exception);
-            }
-        }
-
-        [HttpPost("roles"), Authorize]
+        [HttpPost("roles"), Authorize(Roles = "Administrator")]
         public IActionResult UpdateUserRoles([FromBody] UpdateUserRoleRequest updateUserRoleRequest)
         {
             if (updateUserRoleRequest == null ||
@@ -141,5 +119,42 @@ namespace SartreServer.Controllers
             UserService.UpdateUserRoles(updateUserRoleRequest.Login, roles);
             return Ok();
         }
+
+        [HttpPatch("{login}"), Authorize]
+        public IActionResult UpdateUserProfile(string login, [FromBody] UserUpdateRequest userUpdateRequest)
+        {
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
+            }
+
+            if (userUpdateRequest == null)
+            {
+                return HandleBadRequest("Nothing has been supplied to update.");
+            }
+
+            try
+            {
+                // Verify user
+                if (!UserIsAdministrator() && !UserIs(login))
+                {
+                    return Unauthorized("You cannot update another user's profile!");
+                }
+
+                // Update profile!
+                UserService.UpdateUser(login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
+                return Ok();
+            }
+            catch (UserNotFoundException exception)
+            {
+                return HandleResourceNotFoundException(exception);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        #endregion
     }
 }

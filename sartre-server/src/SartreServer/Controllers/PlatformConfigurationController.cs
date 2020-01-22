@@ -20,6 +20,8 @@ namespace SartreServer.Controllers
             PlatformConfigutationService = platformConfigutationService;
         }
 
+        #region Public getters
+
         [HttpGet("default")]
         public IActionResult GetDefaultBlog()
         {
@@ -37,6 +39,10 @@ namespace SartreServer.Controllers
                 return HandleUnexpectedException(exception);
             }
         }
+
+        #endregion
+
+        #region Administrative features
 
         [HttpPost("default"), Authorize(Roles = "Administrator")]
         public IActionResult SetDefaultBlog([FromBody] SetDefaultBlogRequest setDefaultBlogRequest)
@@ -60,5 +66,7 @@ namespace SartreServer.Controllers
                 return HandleUnexpectedException(exception);
             }
         }
+
+        #endregion
     }
 }
