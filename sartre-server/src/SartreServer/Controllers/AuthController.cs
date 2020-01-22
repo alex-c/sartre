@@ -73,7 +73,11 @@ namespace SartreServer.Controllers
             }
             catch (UserNotFoundException exception)
             {
-                return HandleResourceNotFoundException(exception);
+                return HandleUnexpectedException(exception);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return HandleBadRequest("The submitted password is wrong.");
             }
             catch (Exception exception)
             {
