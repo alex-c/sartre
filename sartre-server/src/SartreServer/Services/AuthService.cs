@@ -137,7 +137,7 @@ namespace SartreServer.Services
             // Verify old password
             if (user.Password != PasswordHashingService.HashAndSaltPassword(previousPassword, user.Salt))
             {
-                throw new UnauthorizedAccessException(); // TODO: catch this!
+                throw new UnauthorizedAccessException();
             }
 
             // Hash and salt new password
