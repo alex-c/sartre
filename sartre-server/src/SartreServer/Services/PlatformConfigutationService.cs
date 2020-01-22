@@ -78,7 +78,12 @@ namespace SartreServer.Services
         /// <exception cref="BlogNotFoundException">The submitted ID is not a valid blog ID.</exception>
         public void SetDefaultBlog(string blogId)
         {
-            if (BlogRepository.GetBlog(blogId) == null)
+            if (string.IsNullOrWhiteSpace(blogId))
+            {
+                blogId = null;
+            }
+
+            if (blogId != null && BlogRepository.GetBlog(blogId) == null)
             {
                 throw new BlogNotFoundException(blogId);
             }

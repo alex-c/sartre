@@ -38,9 +38,14 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("default"), Authorize]
+        [HttpPost("default"), Authorize(Roles = "Administrator")]
         public IActionResult SetDefaultBlog([FromBody] SetDefaultBlogRequest setDefaultBlogRequest)
         {
+            if (setDefaultBlogRequest == null)
+            {
+                return HandleBadRequest("No data sent on request to set default blog.");
+            }
+
             try
             {
                 PlatformConfigutationService.SetDefaultBlog(setDefaultBlogRequest.BlogId);
