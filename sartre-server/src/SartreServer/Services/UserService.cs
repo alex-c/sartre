@@ -91,9 +91,9 @@ namespace SartreServer.Services
             {
                 throw new UserNotFoundException(login);
             }
-            user.Name = name;
-            user.Biography = biography;
-            user.Website = website;
+            user.Name = name ?? user.Name;
+            user.Biography = biography ?? user.Biography;
+            user.Website = website ?? user.Website;
             UserRepository.UpdateUser(user);
         }
 

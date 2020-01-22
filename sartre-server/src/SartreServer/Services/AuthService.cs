@@ -146,6 +146,5 @@ namespace SartreServer.Services
             user.Salt = salt;
             UserRepository.UpdateUser(user);
         }
-
     }
 }

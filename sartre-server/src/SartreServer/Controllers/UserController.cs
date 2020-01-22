@@ -87,17 +87,22 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("profile"), Authorize]
-        public IActionResult UpdateUserProfile([FromBody] UserUpdateRequest userUpdateRequest)
+        [HttpPatch("{login}"), Authorize]
+        public IActionResult UpdateUserProfile(string login, [FromBody] UserUpdateRequest userUpdateRequest)
         {
-            if (userUpdateRequest == null || string.IsNullOrWhiteSpace(userUpdateRequest.Login))
+            if (string.IsNullOrWhiteSpace(login))
             {
                 return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
             }
 
+            if (userUpdateRequest == null)
+            {
+                return HandleBadRequest("Nothing has been supplied to update.");
+            }
+
             try
             {
-                UserService.UpdateUser(userUpdateRequest.Login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
+                UserService.UpdateUser(login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
                 return Ok();
             }
             catch (UserNotFoundException exception)
