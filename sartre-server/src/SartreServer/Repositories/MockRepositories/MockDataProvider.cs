@@ -1,4 +1,5 @@
 ﻿using SartreServer.Models;
+using SartreServer.Services;
 using System.Collections.Generic;
 
 namespace SartreServer.Repositories.MockRepositories
@@ -13,34 +14,42 @@ namespace SartreServer.Repositories.MockRepositories
 
         public string DefaultBlogId { get; } = "main";
 
-        public MockDataProvider()
+        public MockDataProvider(PasswordHashingService passwordHashingService)
         {
             Users = new Dictionary<string, User>();
             Blogs = new Dictionary<string, Blog>();
             Posts = new Dictionary<string, Post>();
 
+            (string hash, byte[] salt) = passwordHashingService.HashAndSaltPassword("test");
             User alex = new User()
             {
                 Login = "alex",
-                Password = "test",
+                Password = hash,
+                Salt = salt,
                 Name = "Alexandre",
                 Roles = new Role[] { Role.Administrator, Role.Author },
                 Biography = "I am the admin!",
                 Website = "www.github.com"
             };
+
+            (hash, salt) = passwordHashingService.HashAndSaltPassword("test");
             User anna = new User()
             {
                 Login = "anna",
-                Password = "test",
+                Password = hash,
+                Salt = salt,
                 Name = "Anna",
                 Roles = new Role[] { Role.Author },
                 Biography = "I am some random blog author!",
                 Website = "www.github.com"
             };
+
+            (hash, salt) = passwordHashingService.HashAndSaltPassword("test");
             User tobi = new User()
             {
                 Login = "tobi",
-                Password = "test",
+                Password = hash,
+                Salt = salt,
                 Name = "Tobias",
                 Roles = new Role[] { Role.Author },
                 Biography = "Rust programmer of doom!",
