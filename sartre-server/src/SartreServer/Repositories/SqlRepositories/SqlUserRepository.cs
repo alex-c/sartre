@@ -75,8 +75,9 @@ namespace SartreServer.Repositories.SqlRepositories
         /// <param name="name">The display name of the user to create.</param>
         /// <param name="password">The password of the user to create.</param>
         /// <returns>Returns the newly created used.</returns>
-        public User CreateUser(string login, string name, string password)
+        public User CreateUser(string login, string name, string password, byte[] salt)
         {
+            // TODO: update DB for salt!
             IEnumerable<User> users = null;
             using (IDbConnection connection = GetNewConnection())
             {

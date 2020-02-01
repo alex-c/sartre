@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using SartreServer.Models;
 using SartreServer.Repositories;
+using SartreServer.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,9 +23,14 @@ namespace SartreServer.Services
         private ILogger Logger { get; }
 
         /// <summary>
+        /// Provides password hashing functionalities.
+        /// </summary>
+        private PasswordHashingService PasswordHashingService { get; }
+
+        /// <summary>
         /// Grants access to user information.
         /// </summary>
-        private IReadOnlyUserRepository UserRepository { get; }
+        private IUserRepository UserRepository { get; }
 
         /// <summary>
         /// Signing credentials for JWTs.
@@ -45,11 +51,13 @@ namespace SartreServer.Services
         /// Sets up the authentication service.
         /// </summary>
         /// <param name="loggerFactroy">Logger factory to create a local logger from.</param>
+        /// <param name="passwordHashingService">Provides hashing functionality.</param>
         /// <param name="userRepository">User repository for access to user data.</param>
         /// <param name="configuration">App configuration for JWT signing information.</param>
-        public AuthService(ILoggerFactory loggerFactroy, IReadOnlyUserRepository userRepository, IConfiguration configuration)
+        public AuthService(ILoggerFactory loggerFactroy, PasswordHashingService passwordHashingService, IUserRepository userRepository, IConfiguration configuration)
         {
             Logger = loggerFactroy.CreateLogger<AuthService>();
+            PasswordHashingService = passwordHashingService;
             UserRepository = userRepository;
             
             // Generate signing credentials
@@ -69,9 +77,7 @@ namespace SartreServer.Services
         public bool TryAuthenticateUser(string login, string password, out User user)
         {
             user = UserRepository.GetUser(login);
-
-            // TODO: add hashing
-            return user.Password == password;
+            return user.Password == PasswordHashingService.HashAndSaltPassword(password, user.Salt);
         }
 
         /// <summary>
@@ -81,7 +87,11 @@ namespace SartreServer.Services
         /// <returns>Returns the generated token.</returns>
         public string GenerateJsonWebToken(User user)
         {
-            List<Claim> claims = new List<Claim>();
+            List<Claim> claims = new List<Claim>
+            {
+                // Add subject
+                new Claim(JwtRegisteredClaimNames.Sub, user.Login)
+            };
 
             // Add role claims
             foreach (Role role in user.Roles)
@@ -92,6 +102,50 @@ namespace SartreServer.Services
             // Generate token
             JwtSecurityToken token = new JwtSecurityToken(JwtIssuer, null, claims, expires: DateTime.Now.Add(JwtLifetime), signingCredentials: SigningCredentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        /// <summary>
+        /// Changes a user's password.
+        /// </summary>
+        /// <param name="login">The login name of the user to change the password for.</param>
+        /// <param name="previousPassword">The user's previous password for verification purposes.</param>
+        /// <param name="newPassword">The new password to hash and store.</param>
+        /// <exception cref="UnauthorizedAccessException">Thrown if the submitted old password is wrong!</exception>
+        public void ChangePassword(string login, string previousPassword, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                throw new ArgumentException("No valid login name provided.", nameof(login));
+            }
+
+            if (string.IsNullOrWhiteSpace(previousPassword))
+            {
+                throw new ArgumentException("No valid old password provided.", nameof(previousPassword));
+            }
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new ArgumentException("No valid new password provided.", nameof(newPassword));
+            }
+
+            // Get user to change the password for
+            User user = UserRepository.GetUser(login);
+            if (user == null)
+            {
+                throw new UserNotFoundException(login);
+            }
+
+            // Verify old password
+            if (user.Password != PasswordHashingService.HashAndSaltPassword(previousPassword, user.Salt))
+            {
+                throw new UnauthorizedAccessException();
+            }
+
+            // Hash and salt new password
+            (string hashedPassword, byte[] salt) = PasswordHashingService.HashAndSaltPassword(newPassword);
+            user.Password = hashedPassword;
+            user.Salt = salt;
+            UserRepository.UpdateUser(user);
         }
     }
 }

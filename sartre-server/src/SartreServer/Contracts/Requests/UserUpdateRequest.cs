@@ -6,11 +6,6 @@
     public class UserUpdateRequest
     {
         /// <summary>
-        /// The user's unique login name.
-        /// </summary>
-        public string Login { get; set; }
-
-        /// <summary>
         /// The user name as it will be displayed in the UI.
         /// </summary>
         public string Name { get; set; }

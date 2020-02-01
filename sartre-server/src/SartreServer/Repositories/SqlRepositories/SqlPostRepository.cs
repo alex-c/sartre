@@ -94,7 +94,6 @@ namespace SartreServer.Repositories.SqlRepositories
         /// <param name="login">Login name of the post author.</param>
         public void CreatePost(Post post, string login)
         {
-            // TODO: move post_authors insert to a PostAuthors repository?
             using (IDbConnection connection = GetNewConnection())
             {
                 connection.Execute("INSERT INTO posts (id, title, published, blog_id, content) VALUES (@Id, @Title, @Published, @BlogId, @Content)", new

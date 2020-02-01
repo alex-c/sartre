@@ -17,6 +17,11 @@ namespace SartreServer.Services
         private ILogger Logger { get; }
 
         /// <summary>
+        /// Provides password hashing features.
+        /// </summary>
+        private PasswordHashingService PasswordHashingService { get; }
+
+        /// <summary>
         /// Provides access to user data persistence.
         /// </summary>
         private IUserRepository UserRepository { get; }
@@ -25,10 +30,12 @@ namespace SartreServer.Services
         /// Sets up the service.
         /// </summary>
         /// <param name="loggerFactroy">Factory to create a logger from.</param>
+        /// <param name="passwordHashingService">Provides hashing features.</param>
         /// <param name="userRepository">Repository for user data.</param>
-        public UserService(ILoggerFactory loggerFactroy, IUserRepository userRepository)
+        public UserService(ILoggerFactory loggerFactroy, PasswordHashingService passwordHashingService, IUserRepository userRepository)
         {
             Logger = loggerFactroy.CreateLogger<UserService>();
+            PasswordHashingService = passwordHashingService;
             UserRepository = userRepository;
         }
 
@@ -72,8 +79,9 @@ namespace SartreServer.Services
                 throw new UserAlreadyExistsException(login);
             }
 
-            // TODO: add hashing!
-            return UserRepository.CreateUser(login, name, password);
+            // Hash & salt password, create user!
+            (string hash, byte[] salt) = PasswordHashingService.HashAndSaltPassword(password);
+            return UserRepository.CreateUser(login, name, hash, salt);
         }
 
         /// <summary>
@@ -91,28 +99,9 @@ namespace SartreServer.Services
             {
                 throw new UserNotFoundException(login);
             }
-            user.Name = name;
-            user.Biography = biography;
-            user.Website = website;
-            UserRepository.UpdateUser(user);
-        }
-
-        /// <summary>
-        /// Changes a user's password.
-        /// </summary>
-        /// <param name="login">The user's unique login name.</param>
-        /// <param name="password">The new password to set.</param>
-        /// <exception cref="UserNotFoundException">Thrown if there is no such user.</exception>
-        public void ChangeUserPassword(string login, string password)
-        {
-            User user = UserRepository.GetUser(login);
-            if (user == null)
-            {
-                throw new UserNotFoundException(login);
-            }
-
-            // TODO: add hashing!
-            user.Password = password;
+            user.Name = name ?? user.Name;
+            user.Biography = biography ?? user.Biography;
+            user.Website = website ?? user.Website;
             UserRepository.UpdateUser(user);
         }
 

@@ -28,6 +28,11 @@ namespace SartreServer.Models
         public string Password { get; set; }
 
         /// <summary>
+        /// The salt used to hash this user's password.
+        /// </summary>
+        public byte[] Salt { get; set; }
+
+        /// <summary>
         /// A short user biography.
         /// </summary>
         public string Biography { get; set; }

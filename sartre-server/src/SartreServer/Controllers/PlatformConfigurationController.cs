@@ -20,6 +20,8 @@ namespace SartreServer.Controllers
             PlatformConfigutationService = platformConfigutationService;
         }
 
+        #region Public getters
+
         [HttpGet("default")]
         public IActionResult GetDefaultBlog()
         {
@@ -38,9 +40,18 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("default"), Authorize]
+        #endregion
+
+        #region Administrative features
+
+        [HttpPost("default"), Authorize(Roles = "Administrator")]
         public IActionResult SetDefaultBlog([FromBody] SetDefaultBlogRequest setDefaultBlogRequest)
         {
+            if (setDefaultBlogRequest == null)
+            {
+                return HandleBadRequest("No data sent on request to set default blog.");
+            }
+
             try
             {
                 PlatformConfigutationService.SetDefaultBlog(setDefaultBlogRequest.BlogId);
@@ -55,5 +66,7 @@ namespace SartreServer.Controllers
                 return HandleUnexpectedException(exception);
             }
         }
+
+        #endregion
     }
 }

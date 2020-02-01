@@ -3,21 +3,21 @@
     /// <summary>
     /// A request to change a user's password.
     /// </summary>
-    public class ChangeUserPasswordRequest
+    public class PasswordChangeRequest
     {
         /// <summary>
-        /// The user's unique login name.
+        /// The user's previous password.
         /// </summary>
-        public string Login { get; set; }
+        public string PreviousPassword { get; set; }
 
         /// <summary>
-        /// A user password.
+        /// A new user password.
         /// </summary>
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
 
         /// <summary>
         /// A repetion of the user password, for safety.
         /// </summary>
-        public string PasswordRepetition { get; set; }
+        public string NewPasswordRepetition { get; set; }
     }
 }

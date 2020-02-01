@@ -23,6 +23,8 @@ namespace SartreServer.Controllers
             UserService = userService;
         }
 
+        #region Public getters
+
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -55,7 +57,11 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost, Authorize]
+        #endregion
+
+        #region Administrative features
+
+        [HttpPost, Authorize(Roles = "Administrator")]
         public IActionResult CreateUser([FromBody] UserCreationRequest userCreationRequest)
         {
             if (userCreationRequest == null ||
@@ -87,61 +93,7 @@ namespace SartreServer.Controllers
             }
         }
 
-        [HttpPost("profile"), Authorize]
-        public IActionResult UpdateUserProfile([FromBody] UserUpdateRequest userUpdateRequest)
-        {
-            if (userUpdateRequest == null || string.IsNullOrWhiteSpace(userUpdateRequest.Login))
-            {
-                return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
-            }
-
-            try
-            {
-                UserService.UpdateUser(userUpdateRequest.Login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
-                return Ok();
-            }
-            catch (UserNotFoundException exception)
-            {
-                return HandleResourceNotFoundException(exception);
-            }
-            catch (Exception exception)
-            {
-                return HandleUnexpectedException(exception);
-            }
-        }
-
-        [HttpPost("password"), Authorize]
-        public IActionResult ChangeUserPassword([FromBody] ChangeUserPasswordRequest changeUserPasswordRequest)
-        {
-            if (changeUserPasswordRequest == null ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Login) ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.Password) ||
-                string.IsNullOrWhiteSpace(changeUserPasswordRequest.PasswordRepetition))
-            {
-                return HandleBadRequest("A valid login name and repeat passwords need to be supplied for a password change.");
-            }
-
-            if (changeUserPasswordRequest.Password != changeUserPasswordRequest.PasswordRepetition)
-            {
-                return HandleBadRequest("Submitted passwords don't match!.");
-            }
-
-            try
-            {
-                UserService.ChangeUserPassword(changeUserPasswordRequest.Login, changeUserPasswordRequest.Password);
-                return Ok();
-            }
-            catch (UserNotFoundException exception)
-            {
-                return HandleResourceNotFoundException(exception);
-            }
-            catch (Exception exception)
-            {
-                return HandleUnexpectedException(exception);
-            }
-        }
-
-        [HttpPost("roles"), Authorize]
+        [HttpPost("roles"), Authorize(Roles = "Administrator")]
         public IActionResult UpdateUserRoles([FromBody] UpdateUserRoleRequest updateUserRoleRequest)
         {
             if (updateUserRoleRequest == null ||
@@ -167,5 +119,42 @@ namespace SartreServer.Controllers
             UserService.UpdateUserRoles(updateUserRoleRequest.Login, roles);
             return Ok();
         }
+
+        [HttpPatch("{login}"), Authorize]
+        public IActionResult UpdateUserProfile(string login, [FromBody] UserUpdateRequest userUpdateRequest)
+        {
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                return HandleBadRequest("A valid login name has to be supplied to identify the user to update.");
+            }
+
+            if (userUpdateRequest == null)
+            {
+                return HandleBadRequest("Nothing has been supplied to update.");
+            }
+
+            try
+            {
+                // Verify user
+                if (!UserIsAdministrator() && !UserIs(login))
+                {
+                    return Unauthorized("You cannot update another user's profile!");
+                }
+
+                // Update profile!
+                UserService.UpdateUser(login, userUpdateRequest.Name, userUpdateRequest.Biography, userUpdateRequest.Website);
+                return Ok();
+            }
+            catch (UserNotFoundException exception)
+            {
+                return HandleResourceNotFoundException(exception);
+            }
+            catch (Exception exception)
+            {
+                return HandleUnexpectedException(exception);
+            }
+        }
+
+        #endregion
     }
 }

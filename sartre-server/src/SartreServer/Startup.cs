@@ -96,7 +96,7 @@ namespace SartreServer
                 MockDataProvider dataProvider = null;
                 if (Configuration.GetValue<bool>("Mocking:SeedWithMockDataOnStartup"))
                 {
-                    dataProvider = new MockDataProvider();
+                    dataProvider = new MockDataProvider(new PasswordHashingService());
                 }
 
                 services.AddSingleton<IPlatformConfigurationRepository>(new MockPlatformConfigurationRepository(dataProvider));
@@ -119,6 +119,7 @@ namespace SartreServer
             }
 
             // Set up services
+            services.AddSingleton<PasswordHashingService>();
             services.AddSingleton<AuthService>();
             services.AddSingleton<PlatformConfigutationService>();
             services.AddSingleton<UserService>();
