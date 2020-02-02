@@ -27,16 +27,6 @@ namespace SartreServer.Services
             return BlogRepository.GetAllBlogs();
         }
 
-        public IEnumerable<Post> GetBlogPosts(string blogId, int page, int itemsPerPage)
-        {
-            return PostRepository.GetPostsOfBlog(blogId, page, itemsPerPage);
-        }
-
-        public IEnumerable<User> GetBlogContributors(string blogId)
-        {
-            throw new NotImplementedException(); // TODO: implement this
-        }
-
         public Blog GetBlog(string blogId)
         {
             Blog blog = BlogRepository.GetBlog(blogId);
@@ -48,6 +38,16 @@ namespace SartreServer.Services
             {
                 return blog;
             }
+        }
+
+        public IEnumerable<Post> GetBlogPosts(string blogId, int page, int itemsPerPage)
+        {
+            return PostRepository.GetPostsOfBlog(blogId, page, itemsPerPage);
+        }
+
+        public IEnumerable<User> GetBlogContributors(string blogId)
+        {
+            return BlogRepository.GetBlog(blogId).Contributors;
         }
     }
 }

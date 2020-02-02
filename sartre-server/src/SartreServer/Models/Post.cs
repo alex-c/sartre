@@ -15,6 +15,7 @@ namespace SartreServer.Models
         /// <summary>
         /// The blog this post is for.
         /// </summary>
+        // TODO: Replace by just the blog ID?
         public Blog Blog { get; set; }
 
         /// <summary>

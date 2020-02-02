@@ -54,11 +54,11 @@ namespace SartreServer.Controllers
         }
 
         [HttpGet("{blogId}/posts")]
-        public IActionResult GetBlogPosts(string blogId, [FromQuery] int page = 1)
+        public IActionResult GetBlogPosts(string blogId, [FromQuery] int page = 1, [FromQuery] int itemsPerPage = 5)
         {
             try
             {
-                IEnumerable<Post> posts = BlogService.GetBlogPosts(blogId, page, 2); // TODO: wheere does items per page come from?
+                IEnumerable<Post> posts = BlogService.GetBlogPosts(blogId, page, itemsPerPage);
                 return Ok(posts);
             }
             catch (Exception exception)
