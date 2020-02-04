@@ -26,6 +26,11 @@ namespace SartreServer.Services
         private IReadOnlyBlogRepository BlogRepository { get; }
 
         /// <summary>
+        /// Cached default blog ID.
+        /// </summary>
+        private string DefaultBlogId { get; set; }
+
+        /// <summary>
         /// Sets up the service.
         /// </summary>
         /// <param name="loggerFactroy">Logger factory to create a logger from.</param>
@@ -36,6 +41,9 @@ namespace SartreServer.Services
             Logger = loggerFactroy.CreateLogger<AuthService>();
             PlatformConfigurationRepository = platformConfigurationRepository;
             BlogRepository = blogRepository;
+
+            // Get default blog ID into cache
+            DefaultBlogId = PlatformConfigurationRepository.GetDefaultBlogId();
         }
 
         /// <summary>
@@ -44,7 +52,7 @@ namespace SartreServer.Services
         /// <returns>Returns the default blog ID or null.</returns>
         public string GetDefaultBlogId()
         {
-            return PlatformConfigurationRepository.GetDefaultBlogId();
+            return DefaultBlogId;
         }
 
         /// <summary>
@@ -54,18 +62,16 @@ namespace SartreServer.Services
         /// <exception cref="BlogNotFoundException">This should not happen! Thrown if there is an inconsistent state: there is a default blog ID set, but no matching blog could be found.</exception>
         public Blog GetDefaultBlog()
         {
-            string defaultBlogId = GetDefaultBlogId();
-
-            if (defaultBlogId == null)
+            if (DefaultBlogId == null)
             {
                 return null;
             }
             else
             {
-                Blog defaultBlog = BlogRepository.GetBlog(defaultBlogId);
+                Blog defaultBlog = BlogRepository.GetBlog(DefaultBlogId);
                 if (defaultBlog == null)
                 {
-                    throw new BlogNotFoundException(defaultBlogId);
+                    throw new BlogNotFoundException(DefaultBlogId);
                 }
                 return defaultBlog;
             }
@@ -89,6 +95,7 @@ namespace SartreServer.Services
             }
             else
             {
+                DefaultBlogId = blogId;
                 PlatformConfigurationRepository.SetDefaultBlog(blogId);
             }
         }
