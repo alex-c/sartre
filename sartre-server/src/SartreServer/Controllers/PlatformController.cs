@@ -2,25 +2,46 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SartreServer.Contracts.Requests;
+using SartreServer.Contracts.Responses;
 using SartreServer.Models;
 using SartreServer.Services;
 using SartreServer.Services.Exceptions;
 using System;
+using System.Collections.Generic;
 
 namespace SartreServer.Controllers
 {
     [Route("api/sartre")]
-    public class PlatformConfigurationController : ControllerBase
+    public class PlatformController : ControllerBase
     {
         private PlatformConfigutationService PlatformConfigutationService { get; }
 
-        public PlatformConfigurationController(ILoggerFactory loggerFactory, PlatformConfigutationService platformConfigutationService)
+        private BlogService BlogService { get; }
+
+        public PlatformController(ILoggerFactory loggerFactory, PlatformConfigutationService platformConfigutationService, BlogService blogService)
         {
-            Logger = loggerFactory.CreateLogger<PlatformConfigurationController>();
+            Logger = loggerFactory.CreateLogger<PlatformController>();
             PlatformConfigutationService = platformConfigutationService;
+            BlogService = blogService;
         }
 
         #region Public getters
+
+        [HttpGet]
+        public IActionResult GetHomePage()
+        {
+            Blog defaultBlog = PlatformConfigutationService.GetDefaultBlog();
+
+            if (defaultBlog == null)
+            {
+                IEnumerable<Blog> blogList = BlogService.GetAllBlogs();
+                return Ok(new HomePageResponse(blogList));
+            }
+            else
+            {
+                return Ok(new HomePageResponse(defaultBlog));
+            }
+        }
 
         [HttpGet("default")]
         public IActionResult GetDefaultBlog()
