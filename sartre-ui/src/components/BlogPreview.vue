@@ -1,9 +1,9 @@
 <template>
   <div class="tile is-parent is-child">
-    <router-link :to="{name: 'blog', params: {id: blog.id}}">
+    <router-link :to="{ name: 'blog', params: { id: blog.id } }">
       <div class="tile is-child box">
-        <div class="box-title">{{blog.title}}</div>
-        <span>{{blog.description}}</span>
+        <div class="box-title">{{ blog.title }}</div>
+        <span>{{ blog.description }}</span>
       </div>
     </router-link>
   </div>
@@ -16,5 +16,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <div class="page-title">{{blog.title}}</div>
+  <div class="page" v-if="blog != null">
+    <div class="page-title">{{ blog.title }}</div>
   </div>
 </template>
 
@@ -15,16 +15,10 @@ export default {
   },
   mounted() {
     Api.getBlog(this.id)
-      .then(function(response) {
-        return response.json();
-      })
-      .then(data => (this.blog = data))
-      .catch(function(error) {
-        console.error(error);
-      });
+      .then(response => (this.blog = response.data))
+      .catch(response => console.error(response.data.message));
   },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
