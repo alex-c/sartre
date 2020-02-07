@@ -14,13 +14,13 @@ export default new Router({
       beforeEnter: function(_to, _from, next) {
         Api.getHomePage()
           .then(response => {
-            if (resposne.data.type === 0) {
-              next({ path: `/blogs/${data.data.id}` });
+            if (response.data.type === 0) {
+              next({ path: `/blogs/${response.data.data.id}` });
             } else {
               next({ path: '/blogs' });
             }
           })
-          .catch(_ => next({ path: '/blogs' }));
+          .catch(_ => next({ path: '/blogs/fashion' }));
       },
     },
     {
