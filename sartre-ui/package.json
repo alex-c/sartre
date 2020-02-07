@@ -3,6 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "description": "A minimal, authentic blogging platform.",
+  "author": {
+    "name": "Alexandre Charoy",
+    "email": "alexandre.charoy@gmail.com",
+    "url": "https://github.com/alex-c"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "buefy": "^0.8.10",
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "bugs": {
+    "url": "https://github.com/alex-c/sartre/issues"
+  },
+  "homepage": "https://github.com/alex-c/sartre#readme",
   "keywords": [
     "blog",
     "blog-engine",
@@ -11,35 +37,9 @@
     "blogging-engine",
     "blogging-platform"
   ],
-  "homepage": "https://github.com/alex-c/sartre#readme",
-  "bugs": {
-    "url": "https://github.com/alex-c/sartre/issues"
-  },
   "license": "GPL-3.0-or-later",
-  "author": {
-    "name": "Alexandre Charoy",
-    "email": "alexandre.charoy@gmail.com",
-    "url": "https://github.com/alex-c"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/alex-c/sartre.git"
-  },
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
-  },
-  "dependencies": {
-    "buefy": "^0.8.10",
-    "core-js": "^2.6.11",
-    "vue": "^2.6.11",
-    "vue-router": "^3.1.5"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-service": "^4.1.2",
-    "node-sass": "^4.13.1",
-    "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.11"
   }
 }
