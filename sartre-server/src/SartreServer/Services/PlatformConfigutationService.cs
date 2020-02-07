@@ -26,9 +26,9 @@ namespace SartreServer.Services
         private IReadOnlyBlogRepository BlogRepository { get; }
 
         /// <summary>
-        /// Cached default blog ID.
+        /// Cached platform configuration.
         /// </summary>
-        private string DefaultBlogId { get; set; }
+        private PlatformConfiguration PlatformConfiguration { get; set; }
 
         /// <summary>
         /// Sets up the service.
@@ -43,16 +43,50 @@ namespace SartreServer.Services
             BlogRepository = blogRepository;
 
             // Get default blog ID into cache
-            DefaultBlogId = PlatformConfigurationRepository.GetDefaultBlogId();
+            PlatformConfiguration = PlatformConfigurationRepository.GetPlatformConfiguration();
+        }
+        
+        /// <summary>
+        /// Gets the full platform configuration.
+        /// </summary>
+        /// <returns>Returns the platform configuration.</returns>
+        public PlatformConfiguration GetPlatformConfiguration()
+        {
+            return PlatformConfiguration;
         }
 
         /// <summary>
-        /// Gets the default blog ID or null.
+        /// Sets the platform configuration.
         /// </summary>
-        /// <returns>Returns the default blog ID or null.</returns>
-        public string GetDefaultBlogId()
+        /// <param name="platformConfiguration">The platform configuration to set.</param>
+        public void SetPlatformConfiguration(PlatformConfiguration platformConfiguration)
         {
-            return DefaultBlogId;
+            PlatformConfigurationRepository.SetPlatformConfiguration(platformConfiguration);
+            PlatformConfiguration = platformConfiguration;
+        }
+
+        /// <summary>
+        /// Gets the platform name.
+        /// </summary>
+        /// <returns></returns>
+        public string GetPlaformName()
+        {
+            return PlatformConfiguration.PlatformName;
+        }
+
+        /// <summary>
+        /// Sets the platform name.
+        /// </summary>
+        /// <param name="platformName">The name to set.</param>
+        public void SetPlatformName(string platformName)
+        {
+            if (string.IsNullOrWhiteSpace(platformName))
+            {
+                throw new System.ArgumentException("The submitted platform name is not valid.", nameof(platformName));
+            }
+
+            PlatformConfiguration.PlatformName = platformName;
+            PlatformConfigurationRepository.SetPlatformConfiguration(PlatformConfiguration);
         }
 
         /// <summary>
@@ -62,16 +96,16 @@ namespace SartreServer.Services
         /// <exception cref="BlogNotFoundException">This should not happen! Thrown if there is an inconsistent state: there is a default blog ID set, but no matching blog could be found.</exception>
         public Blog GetDefaultBlog()
         {
-            if (DefaultBlogId == null)
+            if (PlatformConfiguration.DefaultBlogId == null)
             {
                 return null;
             }
             else
             {
-                Blog defaultBlog = BlogRepository.GetBlog(DefaultBlogId);
+                Blog defaultBlog = BlogRepository.GetBlog(PlatformConfiguration.DefaultBlogId);
                 if (defaultBlog == null)
                 {
-                    throw new BlogNotFoundException(DefaultBlogId);
+                    throw new BlogNotFoundException(PlatformConfiguration.DefaultBlogId);
                 }
                 return defaultBlog;
             }
@@ -95,8 +129,8 @@ namespace SartreServer.Services
             }
             else
             {
-                DefaultBlogId = blogId;
-                PlatformConfigurationRepository.SetDefaultBlog(blogId);
+                PlatformConfiguration.DefaultBlogId = blogId;
+                PlatformConfigurationRepository.SetPlatformConfiguration(PlatformConfiguration);
             }
         }
     }

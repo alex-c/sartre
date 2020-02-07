@@ -1,28 +1,40 @@
-﻿namespace SartreServer.Repositories.MockRepositories
+﻿using SartreServer.Models;
+
+namespace SartreServer.Repositories.MockRepositories
 {
     public class MockPlatformConfigurationRepository : IPlatformConfigurationRepository
     {
-        private string DefaultBlogId { get; set; }
+        private PlatformConfiguration PlatformConfiguration { get; set; }
 
         public MockPlatformConfigurationRepository(MockDataProvider dataProvider = null)
         {
             if (dataProvider == null)
             {
-                DefaultBlogId = null;
+                PlatformConfiguration = new PlatformConfiguration()
+                {
+                    PlatformName = "Sartre",
+                    DefaultBlogId = null
+                };
             }
             else
             {
-                DefaultBlogId = dataProvider.DefaultBlogId;
+
+                PlatformConfiguration = new PlatformConfiguration()
+                {
+                    PlatformName = "Sartre",
+                    DefaultBlogId = dataProvider.DefaultBlogId
+                };
             }
         }
-        public string GetDefaultBlogId()
+
+        public PlatformConfiguration GetPlatformConfiguration()
         {
-            return DefaultBlogId;
+            return PlatformConfiguration;
         }
 
-        public void SetDefaultBlog(string id)
+        public void SetPlatformConfiguration(PlatformConfiguration platformConfiguration)
         {
-            DefaultBlogId = id;
+            PlatformConfiguration = platformConfiguration;
         }
     }
 }

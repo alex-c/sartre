@@ -31,15 +31,16 @@ namespace SartreServer.Controllers
         public IActionResult GetHomePage()
         {
             Blog defaultBlog = PlatformConfigutationService.GetDefaultBlog();
+            string platformName = PlatformConfigutationService.GetPlaformName();
 
             if (defaultBlog == null)
             {
                 IEnumerable<Blog> blogList = BlogService.GetAllBlogs();
-                return Ok(new HomePageResponse(blogList));
+                return Ok(new HomePageResponse(platformName, blogList));
             }
             else
             {
-                return Ok(new HomePageResponse(defaultBlog));
+                return Ok(new HomePageResponse(platformName, defaultBlog));
             }
         }
 

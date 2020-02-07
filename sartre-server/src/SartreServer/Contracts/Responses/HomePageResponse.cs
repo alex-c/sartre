@@ -15,6 +15,11 @@ namespace SartreServer.Contracts.Responses
         public HomePageType Type { get; set; }
 
         /// <summary>
+        /// The name of the blogging platform.
+        /// </summary>
+        public string PlatformName { get; set; }
+
+        /// <summary>
         /// The home page data, which can be either a single blog or a blog list.
         /// </summary>
         public dynamic Data { get; set; }
@@ -23,8 +28,9 @@ namespace SartreServer.Contracts.Responses
         /// Creates a home page response for a blog list.
         /// </summary>
         /// <param name="blogList">The blog list to attach to the response.</param>
-        public HomePageResponse(IEnumerable<Blog> blogList)
+        public HomePageResponse(string platformName, IEnumerable<Blog> blogList)
         {
+            PlatformName = platformName;
             Type = HomePageType.BlogList;
             Data = blogList;
         }
@@ -33,8 +39,9 @@ namespace SartreServer.Contracts.Responses
         /// Creates a home page response for a single blog.
         /// </summary>
         /// <param name="blog">The blog to add to the response.</param>
-        public HomePageResponse(Blog blog)
+        public HomePageResponse(string platformName, Blog blog)
         {
+            PlatformName = platformName;
             Type = HomePageType.Blog;
             Data = blog;
         }

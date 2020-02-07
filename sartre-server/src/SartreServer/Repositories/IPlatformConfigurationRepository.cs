@@ -1,4 +1,6 @@
-﻿namespace SartreServer.Repositories
+﻿using SartreServer.Models;
+
+namespace SartreServer.Repositories
 {
     /// <summary>
     /// A repository for the Sartre platform configuration.
@@ -6,15 +8,15 @@
     public interface IPlatformConfigurationRepository
     {
         /// <summary>
-        /// Get the configured default blog ID. Can be null, if there is no default blog!
+        /// Gets the Sartre platform configuration.
         /// </summary>
-        /// <returns>Returns the default blog ID or null.</returns>
-        string GetDefaultBlogId();
+        /// <returns>Returns the configuration.</returns>
+        PlatformConfiguration GetPlatformConfiguration();
 
         /// <summary>
-        /// Sets the default blog ID. Can be null!
+        /// Sets the Sartre platform configuration.
         /// </summary>
-        /// <param name="id">The ID of the blog to set as default blog or null.</param>
-        void SetDefaultBlog(string id);
+        /// <param name="platformConfiguration">The configuration to save.</param>
+        void SetPlatformConfiguration(PlatformConfiguration platformConfiguration);
     }
 }
