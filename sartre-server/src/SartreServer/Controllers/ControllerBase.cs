@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SartreServer.Contracts.Responses;
 using SartreServer.Services.Exceptions;
 using System;
 using System.Linq;
@@ -75,7 +76,7 @@ namespace SartreServer.Controllers
         /// <returns>Returns a 400 error.</returns>
         protected IActionResult HandleBadRequest(string message)
         {
-            return BadRequest(message);
+            return BadRequest(new ClientErrorResponse(message));
         }
 
         /// <summary>
@@ -85,7 +86,7 @@ namespace SartreServer.Controllers
         /// <returns>Returns a 404 error.</returns>
         protected IActionResult HandleResourceNotFoundException(IResourceNotFoundException exception)
         {
-            return NotFound(exception.Message);
+            return NotFound(new ClientErrorResponse(exception.Message));
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace SartreServer.Controllers
         /// <returns>Returns a 409 error.</returns>
         protected IActionResult HandleResourceAlreadyExistsException(IResourceAlreadyExsistsException exception)
         {
-            return Conflict(exception.Message);
+            return Conflict(new ClientErrorResponse(exception.Message));
         }
 
         /// <summary>
