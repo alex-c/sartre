@@ -67,6 +67,7 @@ export default {
 
 #content {
   overflow: auto;
+  text-align: center;
 }
 
 #menu {
@@ -74,5 +75,6 @@ export default {
   min-width: 200px;
   float: left;
   padding: 8px;
+  text-align: left;
 }
 </style>

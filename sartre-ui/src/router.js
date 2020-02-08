@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Blog from './views/Blog.vue';
 import BlogList from './views/BlogList.vue';
+import Login from './views/Login.vue';
 import Administration from './views/Administration.vue';
 import ProfileAdministration from './components/ProfileAdministration.vue';
 import PlatformAdministration from './components/PlatformAdministration.vue';
@@ -36,6 +37,11 @@ export default new Router({
       name: 'blog',
       component: Blog,
       props: true,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
     },
     {
       path: '/admin',
