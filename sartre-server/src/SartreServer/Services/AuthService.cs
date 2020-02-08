@@ -78,10 +78,7 @@ namespace SartreServer.Services
         public bool TryAuthenticateUser(string login, string password, out User user)
         {
             user = UserRepository.GetUser(login);
-            if (user == null) {
-                throw new UserNotFoundException(login);
-            }
-            return user.Password == PasswordHashingService.HashAndSaltPassword(password, user.Salt);
+            return user != null && user.Password == PasswordHashingService.HashAndSaltPassword(password, user.Salt);
         }
 
         /// <summary>
