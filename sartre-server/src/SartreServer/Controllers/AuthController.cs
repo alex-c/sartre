@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SartreServer.Contracts.Requests;
+using SartreServer.Contracts.Responses;
 using SartreServer.Models;
 using SartreServer.Services;
 using SartreServer.Services.Exceptions;
@@ -32,7 +33,7 @@ namespace SartreServer.Controllers
             {
                 if (AuthService.TryAuthenticateUser(loginRequest.Login, loginRequest.Password, out User user))
                 {
-                    return Ok(AuthService.GenerateJsonWebToken(user));
+                    return Ok(new AuthResponse(AuthService.GenerateJsonWebToken(user)));
                 }
                 else
                 {
