@@ -74,9 +74,13 @@ namespace SartreServer.Services
         /// <param name="password">Password to attempt authentication with.</param>
         /// <param name="user">Contains the authenticated user if authentication is successful, else contains null.</param>
         /// <returns>Returns whether authentication was successful.</returns>
+        /// <exception cref="UserNotFoundException">Thrown if no user with this login name could be found.</exception>
         public bool TryAuthenticateUser(string login, string password, out User user)
         {
             user = UserRepository.GetUser(login);
+            if (user == null) {
+                throw new UserNotFoundException(login);
+            }
             return user.Password == PasswordHashingService.HashAndSaltPassword(password, user.Salt);
         }
 
