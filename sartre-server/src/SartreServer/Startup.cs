@@ -68,7 +68,10 @@ namespace SartreServer
             {
                 options.AddPolicy(LOCAL_DEVELOPMENT_CORS_POLICY, builder =>
                 {
-                    builder.WithOrigins("http://localhost:8080");
+                    builder.WithOrigins("http://localhost:8080")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials();
                 });
             });
 
