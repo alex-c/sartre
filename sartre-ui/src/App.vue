@@ -1,10 +1,17 @@
 <template>
-  <div id="app" class="container">
+  <div id="app">
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
+@import '~bulma/sass/utilities/_all';
+
+// Add Buefy customization here!
+
+@import '~bulma';
+@import '~buefy/src/scss/buefy';
+
 body {
   text-align: center;
 }
@@ -15,7 +22,6 @@ body {
   font-size: 12px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: lightblue;
 }
 
 .page {
