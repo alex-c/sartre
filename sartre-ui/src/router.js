@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Blog from './views/Blog.vue';
 import BlogList from './views/BlogList.vue';
+import Administration from './views/Administration.vue';
+import ProfileAdministration from './components/ProfileAdministration.vue';
+import PlatformAdministration from './components/PlatformAdministration.vue';
 import Api from './api';
 
 Vue.use(Router);
@@ -33,6 +36,20 @@ export default new Router({
       name: 'blog',
       component: Blog,
       props: true,
+    },
+    {
+      path: '/admin',
+      component: Administration,
+      children: [
+        {
+          path: 'profile',
+          component: ProfileAdministration,
+        },
+        {
+          path: 'platform',
+          component: PlatformAdministration,
+        },
+      ],
     },
   ],
 });
