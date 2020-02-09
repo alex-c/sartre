@@ -27,4 +27,7 @@ export default {
   getBlog: id => {
     return fetch(`http://localhost:5000/api/blogs/${id}`).then(processResponse);
   },
+  getUserProfile: login => {
+    return fetch(`http://localhost:5000/api/users/${login}`).then(processResponse);
+  },
 };

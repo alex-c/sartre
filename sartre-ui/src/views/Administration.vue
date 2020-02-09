@@ -3,7 +3,7 @@
     <div id="navbar">
       <div id="navbar-title">Sartre Administration</div>
       <div id="navbar-buttons">
-        <b-button type="is-danger" icon-left="logout">Logout</b-button>
+        <b-button type="is-danger" icon-left="logout" @click="logout">Logout</b-button>
       </div>
     </div>
     <div id="content">
@@ -37,6 +37,12 @@ export default {
     return {
       page: 'profile',
     };
+  },
+  methods: {
+    logout() {
+      this.$store.commit('logout');
+      this.$router.push({ path: '/' });
+    },
   },
 };
 </script>
@@ -76,6 +82,7 @@ export default {
   flex-basis: 20rem;
   flex-grow: 1;
   padding: 8px;
+  border-right: 1px solid #acacac;
 }
 
 #content-inner {
@@ -83,5 +90,10 @@ export default {
   flex-grow: 999;
   min-width: 50%;
   padding: 8px;
+}
+
+.administration-page {
+  max-width: 1280px;
+  margin: auto;
 }
 </style>

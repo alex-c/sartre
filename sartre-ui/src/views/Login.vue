@@ -69,7 +69,7 @@ export default {
       if (this.validateForm()) {
         Api.login(this.form.login, this.form.password)
           .then(response => {
-            localStorage.setItem('token', response.data.token);
+            this.$store.commit('login', response.data.token);
             this.$router.push({ path: '/admin' });
           })
           .catch(response => {

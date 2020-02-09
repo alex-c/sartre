@@ -1,14 +1,18 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+Vue.use(Router);
+
+// Components
 import Blog from './views/Blog.vue';
 import BlogList from './views/BlogList.vue';
 import Login from './views/Login.vue';
 import Administration from './views/Administration.vue';
 import ProfileAdministration from './components/ProfileAdministration.vue';
 import PlatformAdministration from './components/PlatformAdministration.vue';
-import Api from './api';
 
-Vue.use(Router);
+// API & Store
+import Api from './api';
+import store from './store';
 
 export default new Router({
   routes: [
@@ -47,7 +51,7 @@ export default new Router({
       path: '/admin',
       component: Administration,
       beforeEnter: function(_to, _from, next) {
-        if (localStorage.getItem('token') === null) {
+        if (store.state.token === null) {
           next({ path: '/' });
         } else {
           next();
