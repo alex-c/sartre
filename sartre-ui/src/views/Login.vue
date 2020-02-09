@@ -60,15 +60,28 @@ export default {
       this.errors.passwordIsEmpty = !valid;
       return valid;
     },
+    validateForm() {
+      let validLoginName = this.validateLoginName();
+      let validPassword = this.validatePassword();
+      return validLoginName && validPassword;
+    },
     login() {
-      if (this.validateLoginName() && this.validatePassword()) {
+      if (this.validateForm()) {
         Api.login(this.form.login, this.form.password)
           .then(response => {
             localStorage.setItem('token', response.data.token);
+            this.$router.push({ path: '/admin' });
           })
           .catch(response => {
             if (response.status === 401) {
               this.form.password = '';
+              this.$buefy.notification.open({
+                duration: 2500,
+                message: `Bad login credentials.`,
+                position: 'is-top-right',
+                type: 'is-danger',
+                hasIcon: true,
+              });
             }
           });
       }

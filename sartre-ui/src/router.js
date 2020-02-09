@@ -24,7 +24,7 @@ export default new Router({
               next({ path: '/blogs' });
             }
           })
-          .catch(_ => next({ path: '/blogs/fashion' }));
+          .catch(_ => next({ path: '/blogs' }));
       },
     },
     {
@@ -46,6 +46,13 @@ export default new Router({
     {
       path: '/admin',
       component: Administration,
+      beforeEnter: function(_to, _from, next) {
+        if (localStorage.getItem('token') === null) {
+          next({ path: '/' });
+        } else {
+          next();
+        }
+      },
       children: [
         {
           path: 'profile',
