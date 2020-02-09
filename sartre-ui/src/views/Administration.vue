@@ -23,7 +23,9 @@
           </b-menu-list>
         </b-menu>
       </div>
-      <router-view></router-view>
+      <div id="content-inner">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -66,15 +68,20 @@ export default {
 }
 
 #content {
-  overflow: auto;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #menu {
-  width: 20%;
-  min-width: 200px;
-  float: left;
+  flex-basis: 20rem;
+  flex-grow: 1;
   padding: 8px;
-  text-align: left;
+}
+
+#content-inner {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: 50%;
+  padding: 8px;
 }
 </style>
