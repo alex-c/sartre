@@ -1,16 +1,27 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
 
+// JWT decoding tool
 const jwtDecode = require('jwt-decode');
 
+// Load login state from local storage on startup
+let token = localStorage.getItem('token');
+let userName = '';
+let userRoles = [];
+if (token !== null) {
+  let decodedToken = jwtDecode(token);
+  userName = decodedToken.sub;
+  userRoles = decodedToken.role;
+}
+
+// Initialize store
 export default new Vuex.Store({
   state: {
     platformName: '',
-    token: null,
-    userName: '',
-    userRoles: [],
+    token: token,
+    userName: userName,
+    userRoles: userRoles,
   },
   mutations: {
     setPlatformName(state, platformName) {
