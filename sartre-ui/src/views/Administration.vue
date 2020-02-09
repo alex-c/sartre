@@ -9,13 +9,15 @@
     <div id="content">
       <div id="menu">
         <b-menu>
-          <b-menu-list label="Account">
-            <b-menu-item
-              icon="account-card-details"
-              label="Profile"
-              tag="router-link"
-              to="/admin/profile"
-            ></b-menu-item>
+          <b-menu-list>
+            <b-menu-item icon="account" label="Account">
+              <b-menu-item
+                icon="account-card-details"
+                label="Profile"
+                tag="router-link"
+                to="/admin/profile"
+              ></b-menu-item>
+            </b-menu-item>
           </b-menu-list>
           <b-menu-list label="Content"></b-menu-list>
           <b-menu-list label="Administration">
@@ -95,5 +97,12 @@ export default {
 .administration-page {
   max-width: 1280px;
   margin: auto;
+}
+
+.administration-title {
+  font-size: 24px;
+}
+
+.administration-section {
 }
 </style>
