@@ -1,11 +1,21 @@
 <template>
   <div id="profile-administration" class="administration-page">
-    <div class="administration-title">Profile</div>
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li>
+          <router-link to="/admin">Administration</router-link>
+        </li>
+        <li class="is-active">
+          <a href="#">Identity</a>
+        </li>
+        <li class="is-active">
+          <a href="#" aria-current="page">Account</a>
+        </li>
+      </ul>
+    </nav>
     <div class="administration-section">
       <section>
-        <b-field label="Name">
-          <b-input :value="profile.name"></b-input>
-        </b-field>
+        <b-field label="Name">Mz Name</b-field>
         <b-field label="Biography">
           <b-input
             type="textarea"
@@ -13,25 +23,27 @@
             maxlength="1000"
             placeholder="A short introduction..."
             :value="profile.bio"
-          >
-          </b-input>
+          ></b-input>
         </b-field>
         <b-field label="Website">
           <b-input placeholder="URL" type="url"></b-input>
         </b-field>
-        <b-button id="save-profile-button" type="is-success" icon-left="content-save" @click="saveProfile"
-          >Save</b-button
-        >
+        <b-button
+          id="save-profile-button"
+          type="is-success"
+          icon-left="content-save"
+          @click="saveProfile"
+        >Save</b-button>
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import Api from '../api';
+import Api from '../../api';
 
 export default {
-  name: 'profile-administration',
+  name: 'account-administration',
   data() {
     return {
       profile: {

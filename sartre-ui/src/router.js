@@ -7,8 +7,9 @@ import Blog from './views/Blog.vue';
 import BlogList from './views/BlogList.vue';
 import Login from './views/Login.vue';
 import Administration from './views/Administration.vue';
-import ProfileAdministration from './components/ProfileAdministration.vue';
-import PlatformAdministration from './components/PlatformAdministration.vue';
+import AccountAdministration from './views/admin/AccountAdministration.vue';
+import ProfileAdministration from './views/admin/ProfileAdministration.vue';
+import PlatformAdministration from './views/admin/PlatformAdministration.vue';
 
 // API & Store
 import Api from './api';
@@ -58,6 +59,10 @@ export default new Router({
         }
       },
       children: [
+        {
+          path: 'account',
+          component: AccountAdministration,
+        },
         {
           path: 'profile',
           component: ProfileAdministration,

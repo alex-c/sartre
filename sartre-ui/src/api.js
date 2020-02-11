@@ -10,6 +10,8 @@ function processResponse(response) {
   });
 }
 
+// TODO: catch network error first
+
 export default {
   login: (loginName, password) => {
     return fetch('http://localhost:5000/api/auth', {
